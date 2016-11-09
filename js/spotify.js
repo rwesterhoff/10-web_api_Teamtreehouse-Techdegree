@@ -6,31 +6,42 @@
                  callback(response);
              }
          });
-     },
+     },*/
+
+/*CHECK THIS
+https://developer.spotify.com/web-api/object-model/#artist-object-full
+*/
+
+
      displayResults = function(data) {
-         var resultHTML;
-         $.each(array, function(i, item) {
+         var resultHTML,
+             albums = data.albums;
+         $.each(array, function(i, album) {
              resultHTML += '<li class="gallery-item">';
              resultHTML += '<a href="">';
-             resultHTML += '<img src="" alt=">';
+             // resultHTML += '<img src="" alt=">';
+             resultHTML += album.name;
              resultHTML += '</a>';
              resultHTML += '</li>';
          });
          $gallery.html(resultHTML);
-     },*/
+     },
      searchAlbums = function(query) {
          $.ajax({
              url: 'https://api.spotify.com/v1/search',
              data: {
-                 q: query,
-                 type: 'album'
+                 artists: {
+                     name: query
+                 },
+                 album_type: 'album'
              }
-         }).done(function() {
-            alert('Success');
+         }).done(function(response) {
+             alert('Success');
+             displayResults();
          }).fail(function() {
-            alert('Failed');
-         }).always(function(){
-            alert('Complete');
+             alert('Failed');
+         }).always(function() {
+             alert('Complete');
          });
      };
 
