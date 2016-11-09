@@ -1,0 +1,73 @@
+/*----------------------------------------------------------------------------------------------------------------------- *\
+    LAYOUT
+\*----------------------------------------------------------------------------------------------------------------------- */
+
+
+/* Mobile devices and up*/
+
+main.container {
+    padding: 0 15px 30px 15px;
+}
+
+
+/* Medium devices little larger devices and up*/
+
+@media screen and (min-width: 568px) and (max-width: 1024px) {
+    #image-gallery {
+        li.gallery-item {
+            width: calc(33.3333% - 30px);
+        }
+    }
+}
+
+
+/* Medium sized devices and up*/
+
+@media screen and (min-width: 768px) {
+    input[type='search'] {
+        width: 460px;
+    }
+}
+
+
+/* Larger devices and up */
+
+@media screen and (min-width: 1024px) {
+    main.container {
+        width: 1040px;
+        margin: 0 auto;
+        padding: 30px 0 60px 0;
+    }
+    #image-gallery {
+        li.gallery-item {
+            width: 200px;
+            height: 200px;
+            margin: 0 30px 60px 30px;
+        }
+    }
+    .carousel {
+        &-slide {
+            z-index: 1750;
+            display: block;
+            width: 78.125%;
+            margin: 20px auto 0;
+            color: white;
+            figcaption {
+                display: block;
+                max-width: 600px;
+                margin: 20px auto 0;
+            }
+        }
+        &-control {
+            width: 10.9375%;
+            &.left-control {
+                background: url('../Assets/arrow-prev.svg') center no-repeat;
+                background-size: 40px 40px;
+            }
+            &.right-control {
+                background: url('../Assets/arrow-next.svg') center no-repeat;
+                background-size: 40px 40px;
+            }
+        }
+    }
+}
