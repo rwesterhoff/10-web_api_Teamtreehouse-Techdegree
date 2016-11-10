@@ -129,34 +129,32 @@ li.gallery-item {
 /* Overlay data wrapper */
 #js-data-wrapper {
   text-align: center;
-  max-width: 100%; }
+  max-width: 100%;
+  margin-top: 50px; }
   #js-data-wrapper h1 {
     margin: 0 0 25px 0; }
   #js-data-wrapper p {
     margin: 0 0 5px 0; }
-  @media only screen and (max-width: 768px) {
-    #js-data-wrapper {
-      margin-top: 50px; } }
   @media only screen and (min-width: 768px) {
     #js-data-wrapper {
-      margin-left: 50px; } }
+      margin: 0 0 0 50px; } }
 
 .meta {
   color: #BBB; }
 
-@media only screen and (min-width: 768px) {
-  .album-artwork,
-  #js-data-wrapper {
-    float: left;
-    width: calc(50% - 25px); } }
+.album-artwork,
+#js-data-wrapper {
+  width: 100%; }
+  @media only screen and (min-width: 768px) {
+    .album-artwork,
+    #js-data-wrapper {
+      float: left;
+      width: calc(50% - 25px); } }
 
 .album-artwork {
   display: block;
-  margin: 0 auto; }
-  @media only screen and (max-width: 768px) {
-    .album-artwork {
-      width: 100%;
-      max-width: 415px; } }
+  margin: 0 auto;
+  max-width: 415px; }
 
 .play-list {
   padding: 25px 0 0 0; }
