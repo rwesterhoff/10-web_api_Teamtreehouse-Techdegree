@@ -21,15 +21,6 @@ main.container {
 }
 
 
-/* Medium sized devices and up*/
-
-@media screen and (min-width: 768px) {
-    input[type='search'] {
-        width: 460px;
-    }
-}
-
-
 /* Larger devices and up */
 
 @media screen and (min-width: 1024px) {
