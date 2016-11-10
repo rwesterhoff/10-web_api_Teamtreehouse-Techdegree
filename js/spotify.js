@@ -30,10 +30,16 @@ function searchAlbums() {
         }
     });
 }
+var $input = $('#query');
 
-// If keyword is entered in the search field
+/*// If keyword is entered in the search field
 $('form').submit(function(e) {
     e.preventDefault();
+    // Search for keyword
+    searchAlbums();
+});*/
+// If keyword is entered in the search field
+$($input).keyup(function() {
     // Search for keyword
     searchAlbums();
 });

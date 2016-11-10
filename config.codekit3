@@ -31,6 +31,16 @@
 		"oAP": "\/_reference\/Web API Endpoint Reference - Spotify Developer.webloc",
 		"oF": 0
 		},
+	"\/css\/normalize.css": {
+		"aP": 0,
+		"bl": 0,
+		"ft": 16,
+		"ma": 0,
+		"oA": 2,
+		"oAP": "\/css\/normalize-min.css",
+		"oF": 0,
+		"oS": 0
+		},
 	"\/css\/style.css": {
 		"aP": 0,
 		"bl": 0,
