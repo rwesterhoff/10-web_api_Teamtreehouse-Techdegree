@@ -118,6 +118,7 @@ li.gallery-item {
 
 #js-data-wrapper {
     text-align: center;
+    max-width: 100%;
     h1 {
         margin: 0 0 25px 0;
     }
@@ -138,10 +139,18 @@ li.gallery-item {
 
 .album-artwork,
 #js-data-wrapper {
-    max-width: 100%;
     @media only screen and (min-width: #{$bkp-m}) {
         float: left;
         width: calc(50% - 25px);
+    }
+}
+
+.album-artwork {
+    display: block;
+    margin: 0 auto;
+    @media only screen and (max-width: #{$bkp-m}) {
+        width: 100%;
+        max-width: 415px;
     }
 }
 
