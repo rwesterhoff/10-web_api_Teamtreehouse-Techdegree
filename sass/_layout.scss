@@ -36,29 +36,4 @@ main.container {
             margin: 0 30px 60px 30px;
         }
     }
-    .carousel {
-        &-slide {
-            z-index: 1750;
-            display: block;
-            width: 78.125%;
-            margin: 20px auto 0;
-            color: white;
-            figcaption {
-                display: block;
-                max-width: 600px;
-                margin: 20px auto 0;
-            }
-        }
-        &-control {
-            width: 10.9375%;
-            &.left-control {
-                background: url('../Assets/arrow-prev.svg') center no-repeat;
-                background-size: 40px 40px;
-            }
-            &.right-control {
-                background: url('../Assets/arrow-next.svg') center no-repeat;
-                background-size: 40px 40px;
-            }
-        }
-    }
 }

@@ -11,14 +11,47 @@
 </head>
 
 <body>
+    <!-- Overlay -->
+    <div id="js-image-overlay">
+        <div class="overlay-wrapper">
+            <img src="https://i.scdn.co/image/b510d590e03ae91c13d14ae81bab78f143415191" alt="" class="album-artwork">
+            <div class="data-wrapper">
+                <button id="js-close-overlay" class="close-overlay">Close overlay</button>
+                <section class="album-data">
+                    <h1>Album title</h1>
+                    <p><span class="visually-hidden">Artist:</span> By this artist</p>
+                    <div class="meta">Released on
+                        <time datetime="2017-12-12">12/12/2017</time>
+                    </div>
+                    <ul class="play-list">
+                        <li class="track">Track</li>
+                        <li class="track">Track</li>
+                        <li class="track">Track</li>
+                        <li class="track">Track</li>
+                        <li class="track">Track</li>
+                        <li class="track">Track</li>
+                        <li class="track">Track</li>
+                        <li class="track">Track</li>
+                        <li class="track">Track</li>
+                        <li class="track">Track</li>
+                        <li class="track">Track</li>
+                        <li class="track">Track</li>
+                    </ul>
+                </section>
+            </div>
+        </div>
+    </div>
+    <!-- End of overlay -->
     <header class="page-header">
         <form id="search-form">
             <input type="Search" id="query" name="search" placeholder="Search your favorite artist">
         </form>
     </header>
     <main class="container results">
-        <ul id="image-gallery">
-        </ul>
+        <nav class="results" role="navigation">
+            <ul id="image-gallery" role="">
+            </ul>
+        </nav>
     </main>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
     <script src="js/spotify.js"></script>
