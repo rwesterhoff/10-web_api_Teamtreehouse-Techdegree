@@ -8,7 +8,8 @@ html,
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Roboto Mono', sans-serif; }
+  font-family: 'Roboto Mono', sans-serif;
+  color: #333; }
 
 html {
   height: 100%; }
@@ -42,7 +43,7 @@ input[type='search'] {
   width: 100%;
   height: 44px;
   padding: 0 10px;
-  border: 2px solid #D0D0D0;
+  border: 2px solid #BBB;
   border-radius: 4px;
   -webkit-appearance: none;
      -moz-appearance: none;
@@ -80,22 +81,25 @@ li.gallery-item {
 #js-image-overlay {
   position: absolute;
   z-index: 1000;
-  display: table;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   background-color: rgba(46, 46, 46, 0.95); }
 
 /* Overlay content wrapper */
 #js-overlay-wrapper {
-  margin: 0;
   position: absolute;
   top: 50%;
   left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
   width: 100%;
   max-width: 960px;
+  margin: 0;
   padding: 50px;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
   background-color: white; }
   @media screen and (min-width: 768px) {
     #js-overlay-wrapper:after {
@@ -122,24 +126,43 @@ li.gallery-item {
             appearance: none; }
 
 /* Overlay data wrapper */
-#js-data-wrapper > * {
-  margin: 0;
+#js-data-wrapper {
   text-align: center; }
+  #js-data-wrapper h1 {
+    margin: 0 0 25px 0; }
+  #js-data-wrapper p {
+    margin: 0 0 5px 0; }
+  @media only screen and (max-width: 768px) {
+    #js-data-wrapper {
+      margin-top: 50px; } }
+  @media only screen and (min-width: 768px) {
+    #js-data-wrapper {
+      margin-left: 50px; } }
 
-.album-data {
-  width: 100%; }
+.meta {
+  color: #BBB; }
 
 .album-artwork,
-.data-wrapper {
+#js-data-wrapper {
   max-width: 100%; }
   @media only screen and (min-width: 768px) {
     .album-artwork,
-    .data-wrapper {
+    #js-data-wrapper {
       float: left;
-      width: 50%; } }
+      width: calc(50% - 25px); } }
+
+.play-list {
+  padding: 25px 0 0 0; }
+  @media only screen and (min-width: 480px) {
+    .play-list {
+      -webkit-columns: 2;
+         -moz-columns: 2;
+              columns: 2; } }
 
 .album-track {
   list-style: none; }
+  .album-track:not(:last-child) {
+    margin-bottom: 10px; }
 
 /*----------------------------------------------------------------------------------------------------------------------- *    LAYOUT
 \*----------------------------------------------------------------------------------------------------------------------- */

@@ -1,10 +1,12 @@
 // Colors
 $color-white: #FFF;
-$color-gray: #D0D0D0;
+$color-gray: #BBB;
 $color-dark-gray: #333;
 
 // Typography
 $root-font-size: 16; // The value in px or rem will be added in the mixin "font-size"
 
 // Breakpoints
-$bkp-med: '768px';
+$bkp-xs: '320px';
+$bkp-s: '480px';
+$bkp-m: '768px';
