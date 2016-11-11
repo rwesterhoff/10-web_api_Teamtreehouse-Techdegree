@@ -388,7 +388,7 @@
 		"oS": 0,
 		"uL": 1
 		},
-	"\/Sass\/_base.scss": {
+	"\/sass\/_base.scss": {
 		"aP": 0,
 		"bl": 0,
 		"dP": 10,
@@ -401,7 +401,7 @@
 		"oS": 0,
 		"uL": 1
 		},
-	"\/Sass\/_layout.scss": {
+	"\/sass\/_layout.scss": {
 		"aP": 0,
 		"bl": 0,
 		"dP": 10,
@@ -414,7 +414,7 @@
 		"oS": 0,
 		"uL": 1
 		},
-	"\/Sass\/_modules.scss": {
+	"\/sass\/_modules.scss": {
 		"aP": 0,
 		"bl": 0,
 		"dP": 10,
@@ -453,7 +453,7 @@
 		"oS": 0,
 		"uL": 1
 		},
-	"\/Sass\/_variables.scss": {
+	"\/sass\/_variables.scss": {
 		"aP": 0,
 		"bl": 0,
 		"dP": 10,
@@ -466,8 +466,8 @@
 		"oS": 0,
 		"uL": 1
 		},
-	"\/Sass\/style.scss": {
-		"aP": 1,
+	"\/sass\/style.scss": {
+		"aP": 0,
 		"bl": 0,
 		"dP": 10,
 		"dS": 0,
