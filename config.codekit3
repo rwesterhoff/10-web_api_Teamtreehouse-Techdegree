@@ -31,6 +31,26 @@
 		"oAP": "\/_reference\/Web API Endpoint Reference - Spotify Developer.webloc",
 		"oF": 0
 		},
+	"\/assets\/close-x.svg": {
+		"ft": 2097152,
+		"miP": 0,
+		"oA": 2,
+		"oAP": "\/assets\/close-x.svg",
+		"oF": 0,
+		"opt": 0,
+		"plM": 3758088159,
+		"prP": 0
+		},
+	"\/css\/normalize.css": {
+		"aP": 0,
+		"bl": 0,
+		"ft": 16,
+		"ma": 0,
+		"oA": 2,
+		"oAP": "\/css\/normalize-min.css",
+		"oF": 0,
+		"oS": 0
+		},
 	"\/css\/style.css": {
 		"aP": 0,
 		"bl": 0,
@@ -355,6 +375,19 @@
 		"oAP": "\/Sass\/.sass-cache\/8fa7ed7ac6a233ed609e3558e9cacf1ae3de3883\/style.scssc",
 		"oF": 0
 		},
+	"\/sass\/_accessability.scss": {
+		"aP": 0,
+		"bl": 0,
+		"dP": 10,
+		"dS": 0,
+		"ft": 4,
+		"ma": 0,
+		"oA": 1,
+		"oAP": "\/css\/_accessability.css",
+		"oF": 0,
+		"oS": 0,
+		"uL": 1
+		},
 	"\/sass\/_base.scss": {
 		"aP": 0,
 		"bl": 0,
@@ -403,6 +436,19 @@
 		"ma": 0,
 		"oA": 1,
 		"oAP": "\/css\/_states.css",
+		"oF": 0,
+		"oS": 0,
+		"uL": 1
+		},
+	"\/sass\/_utilities.scss": {
+		"aP": 0,
+		"bl": 0,
+		"dP": 10,
+		"dS": 0,
+		"ft": 4,
+		"ma": 0,
+		"oA": 1,
+		"oAP": "\/css\/_utilities.css",
 		"oF": 0,
 		"oS": 0,
 		"uL": 1

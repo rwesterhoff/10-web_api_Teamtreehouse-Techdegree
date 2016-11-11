@@ -25,6 +25,22 @@ input[type='search'] {
         border-color: black;
         outline: none;
     }
+    @media screen and (min-width: #{$bkp-m}) {
+        width: 460px;
+    }
+}
+
+
+/* Main container */
+
+main.container {
+    // background-color: red;
+    height: 100vh;
+    min-height: 100%;
+    h1 {
+        text-align: center;
+        margin: 0 0 60px 0;
+    }
 }
 
 
@@ -40,156 +56,123 @@ li.gallery-item {
     img {
         transform: scale(1.1);
     }
-    a:focus,
-    &:hover {
-        img {
-            filter: blur(10px);
-        }
-    }
     a {
         display: block;
         &:focus,
         &:hover {
             outline: none;
+            img {
+                filter: blur(10px);
+            }
         }
         img {
             display: block;
             width: 100%;
         }
     }
-    &.prev {
-        a {
-            border: 10px solid green;
-        }
-    }
-    &.next {
-        a {
-            border: 10px solid red;
-        }
-    }
 }
 
 
-/* Image overlay */
+/* Lightbox overlay */
 
 #js-image-overlay {
-    position: fixed;
+    position: absolute;
     z-index: 1000;
     top: 0;
+    right: 0;
+    // bottom: 0;
     left: 0;
-    display: none;
-    display: table;
     width: 100%;
     height: 100%;
-    min-height: 100%;
-    margin: 0;
-    padding: 0;
-    text-align: center;
     background-color: rgba(#2e2e2e, .95);
+}
+
+
+/* Overlay content wrapper */
+
+#js-overlay-wrapper {
+    position: absolute;
+    width: 100%;
+    max-width: 960px;
+    margin: 0;
+    padding: 50px;
+    background-color: white;
+    @media screen and (min-width: #{$bkp-m}) {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        &:after {
+            display: table;
+            clear: both;
+            content: ' ';
+        }
+    }
     .close-overlay {
         position: absolute;
-        z-index: 1600;
-        top: 20px;
-        right: 20px;
+        z-index: 1100;
+        top: 15px;
+        right: 15px;
         display: block;
-        width: 40px;
-        height: 40px;
+        width: 20px;
+        height: 20px;
         padding: 0;
         cursor: pointer;
         text-indent: -10000px;
         border: 0;
-        background: url('../Assets/close-x.svg') center no-repeat;
+        background: url('../assets/close-x.svg') center no-repeat;
         background-color: transparent;
-        background-size: 40px 40px;
+        background-size: 100%;
         appearance: none;
-        &:focus,
-        &:hover {
-            outline: 0;
-        }
     }
 }
 
 
-/* Carousel */
+/* Overlay data wrapper */
 
-.carousel {
-    position: relative;
-    display: table-cell;
+#js-data-wrapper {
+    text-align: center;
+    max-width: 100%;
+    margin-top: 50px;
+    h1 {
+        margin: 0 0 25px 0;
+    }
+    p {
+        margin: 0 0 5px 0;
+    }
+    @media only screen and (min-width: #{$bkp-m}) {
+        margin: 0 0 0 50px;
+    }
+}
+
+.meta {
+    color: $color-gray;
+}
+
+.album-artwork,
+#js-data-wrapper {
     width: 100%;
-    vertical-align: middle;
-    &-slides {
-        position: relative;
-        z-index: 1250;
-        width: 100%;
-        margin: 0 auto;
-    }
-    &-slide {
-        display: block;
-        img,
-        iframe {
-            display: block;
-            width: 100%;
-            max-width: 100%;
-        }
-        figcaption {
-            display: none;
-        }
-    }
-    &-control {
-        position: absolute;
-        z-index: 1500;
-        top: 0;
-        display: block;
-        width: 12.5%;
-        height: 100%;
-        padding: 0;
-        cursor: pointer;
-        transition: background .2s;
-        border: 0;
-        background-color: transparent;
-        appearance: none;
-        &.left-control {
-            left: 0;
-            text-indent: -10000px;
-            background: url('../Assets/arrow-prev.svg') center no-repeat;
-            background-size: 40px 40px;
-            &:focus,
-            &:hover {
-                outline: 0;
-                background: url('../Assets/arrow-prev.svg') 25% center no-repeat;
-                background-size: 40px 40px;
-            }
-        }
-        &.right-control {
-            right: 0;
-            text-indent: 10000px;
-            background: url('../Assets/arrow-next.svg') center no-repeat;
-            background-size: 40px 40px;
-            &:focus,
-            &:hover {
-                outline: 0;
-                background: url('../Assets/arrow-next.svg') 75% center no-repeat;
-                background-size: 40px 40px;
-            }
-        }
+    @media only screen and (min-width: #{$bkp-m}) {
+        float: left;
+        width: calc(50% - 25px);
     }
 }
 
-
-/* Getting the video to display correctly */
-
-.videoWrapper {
-    position: relative;
-    height: 0;
-    /* 16:9 */
-    padding-top: 25px;
-    padding-bottom: 56.25%;
+.album-artwork {
+    display: block;
+    margin: 0 auto;
+    max-width: 415px;
 }
 
-.videoWrapper iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+.play-list {
+    padding: 25px 0 0 0;
+    @media only screen and (min-width: #{$bkp-s}) {
+        columns: 2;
+    }
+}
+
+.album-track {
+    list-style: none;
+    &:not(:last-child) {
+        margin-bottom: 10px;
+    }
 }
