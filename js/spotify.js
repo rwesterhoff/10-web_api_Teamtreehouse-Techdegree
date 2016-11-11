@@ -52,15 +52,15 @@ function showDetails(id) {
                     $('body').prepend(overlayHTML);
                     $(overlay).hide();
                     $(overlay).fadeIn(400);
-
                 },
                 prepareCloseEvent = function() {
                     // On click of close button
                     $(closeButton).click(function() {
                         hideOverlay();
                     });
-                    $(document).keyup(function(e) {
-                        if (e.keyCode === 27) {
+                    // On keyboard event 'esc'
+                    $(document).keyup(function(event) {
+                        if (event.keyCode === 27) {
                             hideOverlay();
                         }
                     });
@@ -100,29 +100,31 @@ function searchAlbums() {
             var imageGallery = $('#image-gallery'),
                 albums = response.albums.items,
                 resultHTML = '',
-                activateLightbox = function() {
+                showResults = function() {
+                    $.each(albums, function(i, album) {
+                        var albumId = album.id,
+                            albumName = album.name,
+                            albumThumbUrl = album.images[1].url;
+                        // Add each album HTML to the result list
+                        resultHTML += '<li class="gallery-item">';
+                        resultHTML += '<a href="">';
+                        resultHTML += '<img id="' + albumId + '" src="' + albumThumbUrl + '" alt="' + albumName + '">';
+                        resultHTML += '</a>';
+                        resultHTML += '</li>';
+                    });
+                    // Inject the HTML into DOM (the result list)
+                    imageGallery.html(resultHTML);
+                },
+                activateThumbnails = function() {
                     //On click of thumbnail
                     $("a").click(function(event) {
-                        event.preventDefault();
                         var requestedAlbumId = $(this).find('img').attr('id');
+                        event.preventDefault();
                         showDetails(requestedAlbumId);
                     });
                 };
-
-            $.each(albums, function(i, album) {
-                var albumId = album.id,
-                    albumName = album.name,
-                    albumThumbUrl = album.images[1].url;
-                // Add each album HTML to the result list
-                resultHTML += '<li class="gallery-item">';
-                resultHTML += '<a href="">';
-                resultHTML += '<img id="' + albumId + '" src="' + albumThumbUrl + '" alt="' + albumName + '">';
-                resultHTML += '</a>';
-                resultHTML += '</li>';
-            });
-            // Inject the HTML into DOM (the result list)
-            imageGallery.html(resultHTML);
-            activateLightbox();
+            showResults();
+            activateThumbnails();
         }
     });
 }
