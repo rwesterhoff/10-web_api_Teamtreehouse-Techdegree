@@ -54,6 +54,17 @@ function showDetails(id) {
                     $(overlay).fadeIn(400);
 
                 },
+                prepareCloseEvent = function() {
+                    // On click of close button
+                    $(closeButton).click(function() {
+                        hideOverlay();
+                    });
+                    $(document).keyup(function(e) {
+                        if (e.keyCode === 27) {
+                            hideOverlay();
+                        }
+                    });
+                },
                 hideOverlay = function() {
                     function removeOverlay() {
                         $(overlay).remove();
@@ -65,10 +76,7 @@ function showDetails(id) {
                     $(document).off('keydown');
                 };
             showOverlay();
-            // On click of close button
-            $(closeButton).click(function() {
-                hideOverlay();
-            });
+            prepareCloseEvent();
         }
     });
 }
