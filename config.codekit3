@@ -61,6 +61,12 @@
 		"oF": 0,
 		"oS": 0
 		},
+	"\/index.html": {
+		"ft": 8192,
+		"oA": 2,
+		"oAP": "\/index.html",
+		"oF": 0
+		},
 	"\/Js\/gallery.js": {
 		"ft": 64,
 		"mi": 1,
