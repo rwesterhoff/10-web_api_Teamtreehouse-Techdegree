@@ -2,7 +2,8 @@
     GLOBAL VARIABLES
 \* --------------------------------------------------------------------------- */
 
-var $input = $('#query');
+var $input = $('#query'),
+    imageGallery = $('#image-gallery');
 
 
 /* --------------------------------------------------------------------------- *\
@@ -97,23 +98,27 @@ function searchAlbums() {
             type: 'album'
         },
         success: function(response) {
-            var imageGallery = $('#image-gallery'),
-                albums = response.albums.items,
+            var albums = response.albums.items,
                 resultHTML = '',
                 showResults = function() {
-                    $.each(albums, function(i, album) {
-                        var albumId = album.id,
-                            albumName = album.name,
-                            albumThumbUrl = album.images[1].url;
-                        // Add each album HTML to the result list
-                        resultHTML += '<li class="gallery-item">';
-                        resultHTML += '<a href="">';
-                        resultHTML += '<img id="' + albumId + '" src="' + albumThumbUrl + '" alt="' + albumName + '">';
-                        resultHTML += '</a>';
-                        resultHTML += '</li>';
-                    });
-                    // Inject the HTML into DOM (the result list)
-                    imageGallery.html(resultHTML);
+                    // Check if there are results
+                    if (albums.length === 0) {
+                        imageGallery.html('<p>We have no search results for ' + '<strong>' + searchQuery + '</strong>' + '</p>');
+                    } else {
+                        $.each(albums, function(i, album) {
+                            var albumId = album.id,
+                                albumName = album.name,
+                                albumThumbUrl = album.images[1].url;
+                            // Add each album HTML to the result list
+                            resultHTML += '<li class="gallery-item">';
+                            resultHTML += '<a href="">';
+                            resultHTML += '<img id="' + albumId + '" src="' + albumThumbUrl + '" alt="' + albumName + '">';
+                            resultHTML += '</a>';
+                            resultHTML += '</li>';
+                        });
+                        // Inject the HTML into DOM (the result list)
+                        imageGallery.html(resultHTML);
+                    }
                 },
                 activateThumbnails = function() {
                     //On click of thumbnail

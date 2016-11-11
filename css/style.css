@@ -45,9 +45,7 @@ input[type='search'] {
   padding: 0 10px;
   border: 2px solid #BBB;
   border-radius: 4px;
-  -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none; }
+  appearance: none; }
   input[type='search']:focus {
     border-color: black;
     outline: none; }
@@ -58,9 +56,9 @@ input[type='search'] {
 /* Main container */
 main.container {
   height: 100vh;
-  min-height: 100%; }
+  min-height: 100%;
+  text-align: center; }
   main.container h1 {
-    text-align: center;
     margin: 0 0 60px 0; }
 
 /* Image gallery */
@@ -72,15 +70,13 @@ li.gallery-item {
   margin: 15px;
   list-style: none; }
   li.gallery-item img {
-    -webkit-transform: scale(1.1);
-            transform: scale(1.1); }
+    transform: scale(1.1); }
   li.gallery-item a {
     display: block; }
     li.gallery-item a:focus, li.gallery-item a:hover {
       outline: none; }
       li.gallery-item a:focus img, li.gallery-item a:hover img {
-        -webkit-filter: blur(10px);
-                filter: blur(10px); }
+        filter: blur(10px); }
     li.gallery-item a img {
       display: block;
       width: 100%; }
@@ -108,8 +104,7 @@ li.gallery-item {
     #js-overlay-wrapper {
       top: 50%;
       left: 50%;
-      -webkit-transform: translate(-50%, -50%);
-              transform: translate(-50%, -50%); }
+      transform: translate(-50%, -50%); }
       #js-overlay-wrapper:after {
         display: table;
         clear: both;
@@ -129,9 +124,7 @@ li.gallery-item {
     background: url("../assets/close-x.svg") center no-repeat;
     background-color: transparent;
     background-size: 100%;
-    -webkit-appearance: none;
-       -moz-appearance: none;
-            appearance: none; }
+    appearance: none; }
 
 /* Overlay data wrapper */
 #js-data-wrapper {
@@ -167,9 +160,7 @@ li.gallery-item {
   padding: 25px 0 0 0; }
   @media only screen and (min-width: 480px) {
     .play-list {
-      -webkit-columns: 2;
-         -moz-columns: 2;
-              columns: 2; } }
+      columns: 2; } }
 
 .album-track {
   list-style: none; }
@@ -209,8 +200,7 @@ main.container {
   left: 50%;
   display: block;
   margin-right: -50%;
-  -webkit-transform: translate(-50%, -100%);
-          transform: translate(-50%, -100%);
+  transform: translate(-50%, -100%);
   text-align: center;
   pointer-events: none;
   color: white; }
