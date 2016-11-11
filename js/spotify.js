@@ -91,7 +91,15 @@ function searchAlbums() {
         success: function(response) {
             var imageGallery = $('#image-gallery'),
                 albums = response.albums.items,
-                resultHTML = '';
+                resultHTML = '',
+                activateLightbox = function() {
+                    //On click of thumbnail
+                    $("a").click(function(event) {
+                        event.preventDefault();
+                        var requestedAlbumId = $(this).find('img').attr('id');
+                        showDetails(requestedAlbumId);
+                    });
+                };
 
             $.each(albums, function(i, album) {
                 var albumId = album.id,
@@ -106,12 +114,7 @@ function searchAlbums() {
             });
             // Inject the HTML into DOM (the result list)
             imageGallery.html(resultHTML);
-            //On click of thumbnail
-            $("a").click(function(event) {
-                event.preventDefault();
-                var requestedAlbumId = $(this).find('img').attr('id');
-                showDetails(requestedAlbumId);
-            });
+            activateLightbox();
         }
     });
 }
