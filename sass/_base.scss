@@ -9,11 +9,29 @@
     box-sizing: border-box;
 }
 
+
 html,
-body {
+body,
+ul, 
+li, 
+figure {
     margin: 0;
     padding: 0;
-    font-family: 'Roboto Mono', sans-serif;
+}
+
+html,
+body,
+main,
+ul {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+html,
+body {
+    font-family: $font-stack;
+    font-size: 100%;
     color: $color-dark-gray;
 }
 
@@ -23,16 +41,6 @@ html {
 
 body {
     min-height: 100%;
-}
-
-ul {
-    padding: 0;
-    margin: 0;
-}
-
-figure {
-    margin: 0;
-    padding: 0;
 }
 
 figcaption {

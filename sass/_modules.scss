@@ -6,25 +6,20 @@
 /* Header */
 
 header.page-header {
-    z-index: 500;
     height: 100px;
     padding: 28px;
     text-align: center;
-    background-color: $color-white;
 }
 
 input[type='search'] {
-    font-size: 14px;
+    font-family: $font-stack;
+    font-size: .875rem;
     width: 100%;
     height: 44px;
     padding: 0 10px;
     border: 2px solid $color-gray;
     border-radius: 4px;
     appearance: none;
-    &:focus {
-        border-color: black;
-        outline: none;
-    }
     @media screen and (min-width: #{$bkp-m}) {
         width: 460px;
     }
@@ -34,9 +29,6 @@ input[type='search'] {
 /* Main container */
 
 main.container {
-    // background-color: red;
-    height: 100vh;
-    min-height: 100%;
     text-align: center;
     h1 {
         margin: 0 0 60px 0;
@@ -47,24 +39,12 @@ main.container {
 /* Image gallery */
 
 li.gallery-item {
-    position: relative;
     float: left;
     overflow: hidden;
-    width: calc(50% - 30px);
-    margin: 15px;
+    margin: 15px 0;
     list-style: none;
-    img {
-        transform: scale(1.1);
-    }
     a {
         display: block;
-        &:focus,
-        &:hover {
-            outline: none;
-            img {
-                filter: blur(10px);
-            }
-        }
         img {
             display: block;
             width: 100%;
@@ -76,7 +56,7 @@ li.gallery-item {
 /* Lightbox overlay */
 
 #js-image-overlay {
-    position: absolute;
+    position: fixed;
     z-index: 1000;
     top: 0;
     right: 0;
@@ -130,9 +110,9 @@ li.gallery-item {
 /* Overlay data wrapper */
 
 #js-data-wrapper {
-    text-align: center;
     max-width: 100%;
     margin-top: 50px;
+    text-align: center;
     h1 {
         margin: 0 0 25px 0;
     }
@@ -159,8 +139,8 @@ li.gallery-item {
 
 .album-artwork {
     display: block;
-    margin: 0 auto;
     max-width: 415px;
+    margin: 0 auto;
 }
 
 .play-list {

@@ -5,3 +5,12 @@
     overflow: hidden;
     clip: rect(1px, 1px, 1px, 1px);
 }
+
+input[type='search'],
+a {
+    &:hover,
+    &:focus {
+        border: 2px solid black;
+        outline: none;
+    }
+}

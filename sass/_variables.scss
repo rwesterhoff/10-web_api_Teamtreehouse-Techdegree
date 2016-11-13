@@ -4,10 +4,11 @@ $color-gray: #BBB;
 $color-dark-gray: #333;
 
 // Typography
-$root-font-size: 16; // The value in px or rem will be added in the mixin "font-size"
-
+$root-font-size: 1rem;
+$font-stack: 'Roboto Mono', sans-serif;
 // Breakpoints
 $bkp-xs: '320px';
+$bkp-xs-land: '568px';
 $bkp-s: '480px';
 $bkp-m: '768px';
 $bkp-l: '1024px';

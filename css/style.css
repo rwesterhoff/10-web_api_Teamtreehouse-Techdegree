@@ -5,10 +5,25 @@
   box-sizing: border-box; }
 
 html,
-body {
+body,
+ul,
+li,
+figure {
   margin: 0;
-  padding: 0;
-  font-family: 'Roboto Mono', sans-serif;
+  padding: 0; }
+
+html,
+body,
+main,
+ul {
+  content: "";
+  display: table;
+  clear: both; }
+
+html,
+body {
+  font-family: "Roboto Mono", sans-serif;
+  font-size: 100%;
   color: #333; }
 
 html {
@@ -17,14 +32,6 @@ html {
 body {
   min-height: 100%; }
 
-ul {
-  padding: 0;
-  margin: 0; }
-
-figure {
-  margin: 0;
-  padding: 0; }
-
 figcaption {
   color: #FFF; }
 
@@ -32,58 +39,44 @@ figcaption {
 \*----------------------------------------------------------------------------------------------------------------------- */
 /* Header */
 header.page-header {
-  z-index: 500;
   height: 100px;
   padding: 28px;
-  text-align: center;
-  background-color: #FFF; }
+  text-align: center; }
 
 input[type='search'] {
-  font-size: 14px;
+  font-family: "Roboto Mono", sans-serif;
+  font-size: .875rem;
   width: 100%;
   height: 44px;
   padding: 0 10px;
   border: 2px solid #BBB;
   border-radius: 4px;
   appearance: none; }
-  input[type='search']:focus {
-    border-color: black;
-    outline: none; }
   @media screen and (min-width: 768px) {
     input[type='search'] {
       width: 460px; } }
 
 /* Main container */
 main.container {
-  height: 100vh;
-  min-height: 100%;
   text-align: center; }
   main.container h1 {
     margin: 0 0 60px 0; }
 
 /* Image gallery */
 li.gallery-item {
-  position: relative;
   float: left;
   overflow: hidden;
-  width: calc(50% - 30px);
-  margin: 15px;
+  margin: 15px 0;
   list-style: none; }
-  li.gallery-item img {
-    transform: scale(1.1); }
   li.gallery-item a {
     display: block; }
-    li.gallery-item a:focus, li.gallery-item a:hover {
-      outline: none; }
-      li.gallery-item a:focus img, li.gallery-item a:hover img {
-        filter: blur(10px); }
     li.gallery-item a img {
       display: block;
       width: 100%; }
 
 /* Lightbox overlay */
 #js-image-overlay {
-  position: absolute;
+  position: fixed;
   z-index: 1000;
   top: 0;
   right: 0;
@@ -128,9 +121,9 @@ li.gallery-item {
 
 /* Overlay data wrapper */
 #js-data-wrapper {
-  text-align: center;
   max-width: 100%;
-  margin-top: 50px; }
+  margin-top: 50px;
+  text-align: center; }
   #js-data-wrapper h1 {
     margin: 0 0 25px 0; }
   #js-data-wrapper p {
@@ -153,8 +146,8 @@ li.gallery-item {
 
 .album-artwork {
   display: block;
-  margin: 0 auto;
-  max-width: 415px; }
+  max-width: 415px;
+  margin: 0 auto; }
 
 .play-list {
   padding: 25px 0 0 0; }
@@ -170,25 +163,29 @@ li.gallery-item {
 /*----------------------------------------------------------------------------------------------------------------------- *    LAYOUT
 \*----------------------------------------------------------------------------------------------------------------------- */
 main.container {
-  padding: 0 15px 30px 15px;
   width: 100%;
   max-width: 1040px;
-  margin: 0 auto; }
+  margin: 0 auto;
+  padding: 0 15px 30px 15px; }
   @media screen and (min-width: 1024px) {
     main.container {
       padding: 30px 0 60px 0; } }
 
-/* Medium devices little larger devices and up*/
-@media screen and (min-width: 568px) and (max-width: 1024px) {
-  #image-gallery li.gallery-item {
-    width: calc(33.3333% - 30px); } }
-
-/* Larger devices and up */
-@media screen and (min-width: 1024px) {
-  #image-gallery li.gallery-item {
-    width: 200px;
-    height: 200px;
-    margin: 0 30px 60px 30px; } }
+li.gallery-item {
+  width: calc(100% - 30px);
+  margin: 15px; }
+  @media screen and (min-width: 480px) {
+    li.gallery-item {
+      width: calc(50% - 30px);
+      margin: 15px; } }
+  @media screen and (min-width: 568px) and (max-width: 1024px) {
+    li.gallery-item {
+      width: calc(33.3333% - 30px); } }
+  @media screen and (min-width: 1024px) {
+    li.gallery-item {
+      width: 200px;
+      height: 200px;
+      margin: 0 30px 60px 30px; } }
 
 /*----------------------------------------------------------------------------------------------------------------------- * STATES
 \*----------------------------------------------------------------------------------------------------------------------- */
@@ -211,3 +208,9 @@ main.container {
   height: 1px;
   overflow: hidden;
   clip: rect(1px, 1px, 1px, 1px); }
+
+input[type='search']:hover, input[type='search']:focus,
+a:hover,
+a:focus {
+  border: 2px solid black;
+  outline: none; }

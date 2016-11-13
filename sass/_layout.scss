@@ -3,35 +3,28 @@
 \*----------------------------------------------------------------------------------------------------------------------- */
 
 main.container {
-    padding: 0 15px 30px 15px;
     width: 100%;
     max-width: 1040px;
     margin: 0 auto;
+    padding: 0 15px 30px 15px;
     @media screen and (min-width: #{$bkp-l}) {
         padding: 30px 0 60px 0;
     }
 }
 
-
-/* Medium devices little larger devices and up*/
-
-@media screen and (min-width: 568px) and (max-width: #{$bkp-l}) {
-    #image-gallery {
-        li.gallery-item {
-            width: calc(33.3333% - 30px);
-        }
+li.gallery-item {
+    width: calc(100% - 30px);
+    margin: 15px;
+    @media screen and (min-width: #{$bkp-s}) {
+        width: calc(50% - 30px);
+        margin: 15px;
     }
-}
-
-
-/* Larger devices and up */
-
-@media screen and (min-width: #{$bkp-l}) {
-    #image-gallery {
-        li.gallery-item {
-            width: 200px;
-            height: 200px;
-            margin: 0 30px 60px 30px;
-        }
+    @media screen and (min-width: #{$bkp-xs-land}) and (max-width: #{$bkp-l}) {
+        width: calc(33.3333% - 30px);
+    }
+    @media screen and (min-width: #{$bkp-l}) {
+        width: 200px;
+        height: 200px;
+        margin: 0 30px 60px 30px;
     }
 }
