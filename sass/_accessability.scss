@@ -14,3 +14,12 @@ a {
         outline: none;
     }
 }
+
+.close-overlay {
+    transition: all 0.2s linear;
+    &:hover,
+    &:focus {
+        transform: rotate(180deg) scale(1.2);
+        outline: none;
+    }
+}

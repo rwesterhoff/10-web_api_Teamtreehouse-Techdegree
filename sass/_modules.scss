@@ -57,13 +57,10 @@ li.gallery-item {
 #js-image-overlay {
     position: fixed;
     z-index: 1000;
-    top: 0;
-    right: 0;
-    // bottom: 0;
-    left: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(#2e2e2e, .95);
+    overflow: scroll;
 }
 
 
@@ -73,7 +70,7 @@ li.gallery-item {
     position: absolute;
     width: 100%;
     max-width: 960px;
-    margin: 0;
+    max-height: 100vh;
     padding: 50px;
     background-color: white;
     @media screen and (min-width: #{$bkp-m}) {
@@ -109,8 +106,8 @@ li.gallery-item {
 /* Overlay data wrapper */
 
 #js-data-wrapper {
-    max-width: 100%;
-    margin-top: 50px;
+    width: 100%;
+    margin: 50px 0 0 0;
     text-align: center;
     h1 {
         margin: 0 0 25px 0;
@@ -118,13 +115,21 @@ li.gallery-item {
     p {
         margin: 0 0 5px 0;
     }
+    .meta {
+        color: $color-gray;
+    }
+    .play-list {
+        padding: 25px 0 0 0;
+    }
+    .album-track {
+        list-style: none;
+        &:not(:last-child) {
+            margin-bottom: 10px;
+        }
+    }
     @media only screen and (min-width: #{$bkp-m}) {
         margin: 0 0 0 50px;
     }
-}
-
-.meta {
-    color: $color-gray;
 }
 
 .album-artwork,
@@ -140,18 +145,4 @@ li.gallery-item {
     display: block;
     max-width: 415px;
     margin: 0 auto;
-}
-
-.play-list {
-    padding: 25px 0 0 0;
-    @media only screen and (min-width: #{$bkp-s}) {
-        columns: 2;
-    }
-}
-
-.album-track {
-    list-style: none;
-    &:not(:last-child) {
-        margin-bottom: 10px;
-    }
 }

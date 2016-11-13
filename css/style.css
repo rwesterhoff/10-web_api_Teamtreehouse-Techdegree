@@ -18,7 +18,8 @@ main,
 ul {
   content: "";
   display: table;
-  clear: both; }
+  clear: both;
+  width: 100%; }
 
 html,
 body {
@@ -77,19 +78,17 @@ li.gallery-item {
 #js-image-overlay {
   position: fixed;
   z-index: 1000;
-  top: 0;
-  right: 0;
-  left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(46, 46, 46, 0.95); }
+  background-color: rgba(46, 46, 46, 0.95);
+  overflow: scroll; }
 
 /* Overlay content wrapper */
 #js-overlay-wrapper {
   position: absolute;
   width: 100%;
   max-width: 960px;
-  margin: 0;
+  max-height: 100vh;
   padding: 50px;
   background-color: white; }
   @media screen and (min-width: 768px) {
@@ -120,19 +119,24 @@ li.gallery-item {
 
 /* Overlay data wrapper */
 #js-data-wrapper {
-  max-width: 100%;
-  margin-top: 50px;
+  width: 100%;
+  margin: 50px 0 0 0;
   text-align: center; }
   #js-data-wrapper h1 {
     margin: 0 0 25px 0; }
   #js-data-wrapper p {
     margin: 0 0 5px 0; }
+  #js-data-wrapper .meta {
+    color: #BBB; }
+  #js-data-wrapper .play-list {
+    padding: 25px 0 0 0; }
+  #js-data-wrapper .album-track {
+    list-style: none; }
+    #js-data-wrapper .album-track:not(:last-child) {
+      margin-bottom: 10px; }
   @media only screen and (min-width: 768px) {
     #js-data-wrapper {
       margin: 0 0 0 50px; } }
-
-.meta {
-  color: #BBB; }
 
 .album-artwork,
 #js-data-wrapper {
@@ -147,17 +151,6 @@ li.gallery-item {
   display: block;
   max-width: 415px;
   margin: 0 auto; }
-
-.play-list {
-  padding: 25px 0 0 0; }
-  @media only screen and (min-width: 480px) {
-    .play-list {
-      columns: 2; } }
-
-.album-track {
-  list-style: none; }
-  .album-track:not(:last-child) {
-    margin-bottom: 10px; }
 
 /*----------------------------------------------------------------------------------------------------------------------- *    LAYOUT
 \*----------------------------------------------------------------------------------------------------------------------- */
@@ -186,21 +179,6 @@ li.gallery-item {
       height: 200px;
       margin: 0 30px 60px 30px; } }
 
-/*----------------------------------------------------------------------------------------------------------------------- * STATES
-\*----------------------------------------------------------------------------------------------------------------------- */
-/* Centerring the hover + focus text */
-.js-alt-active {
-  position: absolute;
-  z-index: 750;
-  top: 50%;
-  left: 50%;
-  display: block;
-  margin-right: -50%;
-  transform: translate(-50%, -100%);
-  text-align: center;
-  pointer-events: none;
-  color: white; }
-
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -213,3 +191,9 @@ a:hover,
 a:focus {
   border: 2px solid black;
   outline: none; }
+
+.close-overlay {
+  transition: all 0.2s linear; }
+  .close-overlay:hover, .close-overlay:focus {
+    transform: rotate(180deg) scale(1.2);
+    outline: none; }
