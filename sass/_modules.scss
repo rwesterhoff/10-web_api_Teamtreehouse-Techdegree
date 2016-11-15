@@ -19,7 +19,7 @@ input[type='search'] {
     padding: 0 10px;
     border: 2px solid $color-gray;
     border-radius: 4px;
-    appearance: none;
+    // appearance: none;
     @media screen and (min-width: #{$bkp-m}) {
         width: 460px;
     }
@@ -40,6 +40,10 @@ main.container {
 
 
 /* Image gallery */
+
+#image-gallery li {
+    list-style: none;
+}
 
 li.gallery-item {
     float: left;
@@ -95,7 +99,7 @@ li.gallery-item {
         background: url('../assets/close-x.svg') center no-repeat;
         background-color: transparent;
         background-size: 100%;
-        appearance: none;
+        // appearance: none;
     }
 }
 
