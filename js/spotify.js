@@ -65,13 +65,13 @@ function showDetails(id) {
                             hideOverlay();
                         }
                     });
-                    // When the user clicks anywhere outside of the modal, close it
+                    // On click outside modal
                     window.onclick = function(event) {
-                        console.log(event.target);
-                        // if (event.target == $(overlay)) {
-                        //     hideOverlay();
-                        // }
-                    }
+                        var elementClicked = event.target.id;
+                        if (elementClicked === 'js-image-overlay') {
+                            hideOverlay();
+                        }
+                    };
                 },
                 hideOverlay = function() {
                     function removeOverlay() {
