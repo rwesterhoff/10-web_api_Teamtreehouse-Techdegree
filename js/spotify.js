@@ -25,7 +25,33 @@ function showDetails(id) {
                 overlayHTML = '',
                 overlay = '#js-image-overlay',
                 closeButton = '#js-close-overlay',
+                getItunesData = function() {
+                    var fixedString = (artistName + '+' + albumName).replace(/ /g, '+').toLowerCase(),
+                        albumId,
+                        getAlbumId = function() {
+                            $.ajax({
+                                url: 'https://itunes.apple.com/search/?term=' + fixedString,
+                                success: function(response) {
+                                    albumId = response.collectionId;
+                                    console.log('albumId= ' + albumId);
+                                    // console.log(response);
+                                }
+                            });
+                        },
+                        getItunesLink = function() {
+                            $.ajax({
+                                url: 'https://itunes.apple.com/lookup?id=' + albumId,
+                                success: function(response) {
+                                    var iTunesLink = response.collectionViewUrl;
+                                    console.log('iTunesLink= ' + iTunesLink);
+                                }
+                            });
+                        };
+                    getAlbumId();
+                    getItunesLink();
+                },
                 showOverlay = function() {
+                    getItunesData();
                     // Opening HTML and fill with artist and album data
                     overlayHTML += '<div id="js-image-overlay">';
                     overlayHTML += '<div id="js-overlay-wrapper">';
@@ -44,6 +70,11 @@ function showDetails(id) {
                         overlayHTML += '<li class="album-track">' + trackName + '</li>';
                     });
                     // Closing the HTML
+                    overlayHTML += '<li id="itunes-store">';
+                    overlayHTML += '<a href="" class="cta-button">';
+                    overlayHTML += '<img src="../assets/Get_it_on_iTunes_Badge_US_1114.svg" alt="Get it oniTunes">';
+                    overlayHTML += '</a>';
+                    overlayHTML += '</li>';
                     overlayHTML += '</ul>';
                     overlayHTML += '</section>';
                     overlayHTML += '</div>';
@@ -89,7 +120,6 @@ function showDetails(id) {
     });
 }
 
-
 /* --------------------------------------------------------------------------- *\
     SEARCH
 \* --------------------------------------------------------------------------- */
@@ -97,7 +127,7 @@ function showDetails(id) {
 // Search albums based on keyword
 function searchAlbums() {
     var searchQuery = $input.val();
-    // Get data 
+    // Get data in Spotify
     $.ajax({
         url: 'https://api.spotify.com/v1/search',
         data: {
