@@ -25,43 +25,7 @@ function showDetails(id) {
                 overlayHTML = '',
                 overlay = '#js-image-overlay',
                 closeButton = '#js-close-overlay',
-                getItunesData = function() {
-                    var fixedString = (artistName + '+' + albumName).replace(/ /g, '+').toLowerCase(),
-                        getAlbumId = function(album) {
-                            $.ajax({
-                                url: 'https://itunes.apple.com/search/?term=' + album,
-                                type: 'GET',
-                                dataType: 'jsonp',
-                                success: function(response) {
-                                    var retrievedAlbumId = response.results[0].collectionId;
-                                    console.log(retrievedAlbumId);
-                                },
-                                error: function() {
-                                    alert('error on "getAlbumId"');
-                                }
-                            });
-
-                        },
-                        getItunesLink = function(id) {
-                            $.ajax({
-                                url: 'https://itunes.apple.com/lookup?id=' + id,
-                                type: 'GET',
-                                dataType: 'jsonp',
-                                success: function(response) {
-                                    var iTunesLink = response.collectionViewUrl;
-                                    console.log(iTunesLink);
-                                },
-                                error: function() {
-                                    alert('error on "getItunesLink"');
-                                }
-                            });
-                        };
-                    iTunesId = getAlbumId(fixedString);
-                    // getItunesLink(iTunesId);
-                    // console.log(iTunesId);
-                },
                 showOverlay = function() {
-                    var iTunesLink = getItunesData();
                     // Opening HTML and fill with artist and album data
                     overlayHTML += '<div id="js-image-overlay">';
                     overlayHTML += '<div id="js-overlay-wrapper">';
@@ -81,7 +45,7 @@ function showDetails(id) {
                     });
                     // Closing the HTML
                     overlayHTML += '<li id="itunes-store">';
-                    overlayHTML += '<a href="' + iTunesLink + '" class="cta-button">';
+                    overlayHTML += '<a id="itunes-button" href="" class="cta-button">';
                     overlayHTML += '<img src="../assets/Get_it_on_iTunes_Badge_US_1114.svg" alt="Get it oniTunes">';
                     overlayHTML += '</a>';
                     overlayHTML += '</li>';
@@ -94,6 +58,7 @@ function showDetails(id) {
                     $('body').prepend(overlayHTML);
                     $(overlay).hide();
                     $(overlay).fadeIn(400);
+                    getItunesData(artistName, albumName);
                 },
                 prepareCloseEvent = function() {
                     // On click of close button
@@ -129,6 +94,37 @@ function showDetails(id) {
         }
     });
 }
+
+
+/* --------------------------------------------------------------------------- *\
+    iTUNES
+\* --------------------------------------------------------------------------- */
+
+function getItunesData(artist, album) {
+    var fixedString = (artist + '+' + album).replace(/ /g, '+').toLowerCase(),
+        itunesButton = '#itunes-button',
+        getItunesLink = function(fixedString) {
+            $.ajax({
+                url: 'https://itunes.apple.com/search/?term=' + fixedString,
+                /*type: 'GET',*/
+                dataType: 'jsonp',
+                success: function(response) {
+                    var retrievedAlbumLink = response.results[0].collectionViewUrl;
+                    console.log(response);
+                    console.log('retrievedAlbumLink: ' + retrievedAlbumLink);
+                    console.log('collectionId: ' + response.results[0].collectionId);
+                    $('#itunes-button').attr('href', retrievedAlbumLink);
+                },
+                error: function() {
+                    alert('error on "getAlbumId"');
+                }
+            });
+        };
+
+    console.log(fixedString);
+    getItunesLink();
+}
+
 
 /* --------------------------------------------------------------------------- *\
     SEARCH
