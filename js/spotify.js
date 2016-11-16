@@ -27,31 +27,41 @@ function showDetails(id) {
                 closeButton = '#js-close-overlay',
                 getItunesData = function() {
                     var fixedString = (artistName + '+' + albumName).replace(/ /g, '+').toLowerCase(),
-                        albumId,
-                        getAlbumId = function() {
+                        getAlbumId = function(album) {
                             $.ajax({
-                                url: 'https://itunes.apple.com/search/?term=' + fixedString,
+                                url: 'https://itunes.apple.com/search/?term=' + album,
+                                type: 'GET',
+                                dataType: 'jsonp',
                                 success: function(response) {
-                                    albumId = response.collectionId;
-                                    console.log('albumId= ' + albumId);
-                                    // console.log(response);
+                                    var retrievedAlbumId = response.results[0].collectionId;
+                                    console.log(retrievedAlbumId);
+                                },
+                                error: function() {
+                                    alert('error on "getAlbumId"');
                                 }
                             });
+
                         },
-                        getItunesLink = function() {
+                        getItunesLink = function(id) {
                             $.ajax({
-                                url: 'https://itunes.apple.com/lookup?id=' + albumId,
+                                url: 'https://itunes.apple.com/lookup?id=' + id,
+                                type: 'GET',
+                                dataType: 'jsonp',
                                 success: function(response) {
                                     var iTunesLink = response.collectionViewUrl;
-                                    console.log('iTunesLink= ' + iTunesLink);
+                                    console.log(iTunesLink);
+                                },
+                                error: function() {
+                                    alert('error on "getItunesLink"');
                                 }
                             });
                         };
-                    getAlbumId();
-                    getItunesLink();
+                    iTunesId = getAlbumId(fixedString);
+                    // getItunesLink(iTunesId);
+                    // console.log(iTunesId);
                 },
                 showOverlay = function() {
-                    getItunesData();
+                    var iTunesLink = getItunesData();
                     // Opening HTML and fill with artist and album data
                     overlayHTML += '<div id="js-image-overlay">';
                     overlayHTML += '<div id="js-overlay-wrapper">';
@@ -71,7 +81,7 @@ function showDetails(id) {
                     });
                     // Closing the HTML
                     overlayHTML += '<li id="itunes-store">';
-                    overlayHTML += '<a href="" class="cta-button">';
+                    overlayHTML += '<a href="' + iTunesLink + '" class="cta-button">';
                     overlayHTML += '<img src="../assets/Get_it_on_iTunes_Badge_US_1114.svg" alt="Get it oniTunes">';
                     overlayHTML += '</a>';
                     overlayHTML += '</li>';
