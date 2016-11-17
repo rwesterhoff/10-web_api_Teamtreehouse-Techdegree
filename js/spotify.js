@@ -183,12 +183,13 @@ $($input).keyup(function() {
 /* --------------------------------------------------------------------------- *\
     SORT RESULTS
 \* --------------------------------------------------------------------------- */
-sortByName.click(function() {
-    this.attr('checked', checked);
-})
-sortByDate.click(function() {
-    this.attr('checked', checked);
-})
+// Change the appearance of the buttons
+$('input[type="radio"').change(function() {
+    var forAttr = this.id;
+    $('label').attr('data-state', 'deselected');
+    $('label[for="' + forAttr + '"]').attr('data-state', 'selected');
+});
+
 function sortUnorderedList(ul, sortDescending) {
     if (typeof ul == "string")
         ul = document.getElementById('image-gallery');

@@ -60,11 +60,23 @@ input[type='search'] {
       width: 460px; } }
 
 /* Main container */
-input[type="radio"][data-state="selected"] {
-  background-color: #BBB; }
+.sort-filter input[type="radio"] {
+  display: none; }
 
-input[type="radio"][data-state="deselected"] {
-  background-color: #FFF; }
+.sort-filter .sort-button-split {
+  margin: 0;
+  user-select: none; }
+  .sort-filter .sort-button-split[data-state="selected"] {
+    background-color: #BBB; }
+  .sort-filter .sort-button-split[data-state="deselected"] {
+    background-color: #FFF;
+    color: #BBB; }
+  .sort-filter .sort-button-split:first-child {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0; }
+  .sort-filter .sort-button-split:nth-last-child(2) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0; }
 
 main.container {
   text-align: center; }

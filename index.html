@@ -19,11 +19,8 @@
     <main class="container">
         <h1>Get your favorite songs in a blink of an eye</h1>
         <nav id="results-list">
-            <form action="">
-                <label for="name" class="sort-button-split" data-state="selected">Name</label>
-                <input type="radio" class="sort-button-split" id="name" name="sort" value="name" checked>
-                <label for="date" class="sort-button-split" data-state="deselected">Date</label>
-                <input type="radio" class="sort-button-split" id="date" name="sort" value="date">
+            <form class="sort-filter" action="">
+                <label for="name" class="sort-button-split" data-state="selected">Name</label><input type="radio" id="name" name="sort" value="name" checked><label for="date" class="sort-button-split" data-state="deselected">Date</label><input type="radio" id="date" name="sort" value="date">
             </form>
             <ul id="image-gallery">
                 <li>
