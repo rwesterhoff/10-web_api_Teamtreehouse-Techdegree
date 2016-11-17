@@ -16,12 +16,12 @@ function showDetails(id) {
     // Get data 
     $.ajax({
         url: 'https://api.spotify.com/v1/albums/' + albumId,
-        success: function(response) {
-            var artistName = response.artists[0].name,
-                albumName = response.name,
-                albumImgUrl = response.images[0].url,
-                albumReleased = response.release_date,
-                tracks = response.tracks.items,
+        success: function(details) {
+            var artistName = details.artists[0].name,
+                albumName = details.name,
+                albumImgUrl = details.images[0].url,
+                albumReleased = details.release_date,
+                tracks = details.tracks.items,
                 overlayHTML = '',
                 overlay = '#js-image-overlay',
                 closeButton = '#js-close-overlay',
@@ -103,16 +103,16 @@ function showDetails(id) {
 function getItunesData(artist, album) {
     var fixedString = (artist + '+' + album).replace(/ /g, '+').toLowerCase(),
         itunesButton = '#itunes-button',
-        getItunesLink = function(fixedString) {
+        getItunesLink = function(string) {
             $.ajax({
-                url: 'https://itunes.apple.com/search/?term=' + fixedString,
-                /*type: 'GET',*/
+                url: 'https://itunes.apple.com/search/?term=' + string,
+                type: 'GET',
                 dataType: 'jsonp',
-                success: function(response) {
-                    var retrievedAlbumLink = response.results[0].collectionViewUrl;
-                    console.log(response);
+                success: function(data) {
+                    var retrievedAlbumLink = data.results[0].collectionViewUrl;
+                    console.log(data);
                     console.log('retrievedAlbumLink: ' + retrievedAlbumLink);
-                    console.log('collectionId: ' + response.results[0].collectionId);
+                    console.log('collectionId: ' + data.results[0].collectionId);
                     $('#itunes-button').attr('href', retrievedAlbumLink);
                 },
                 error: function() {
@@ -122,7 +122,7 @@ function getItunesData(artist, album) {
         };
 
     console.log(fixedString);
-    getItunesLink();
+    getItunesLink(fixedString);
 }
 
 
