@@ -44,11 +44,9 @@ function showDetails(id) {
                         overlayHTML += '<li class="album-track">' + trackName + '</li>';
                     });
                     // Closing the HTML
-                    overlayHTML += '<li id="itunes-store">';
                     overlayHTML += '<a id="itunes-button" href="" class="cta-button">';
                     overlayHTML += '<img src="assets/itunes-badge.svg" alt="Get it oniTunes">';
                     overlayHTML += '</a>';
-                    overlayHTML += '</li>';
                     overlayHTML += '</ul>';
                     overlayHTML += '</section>';
                     overlayHTML += '</div>';

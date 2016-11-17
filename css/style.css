@@ -133,6 +133,13 @@ li.gallery-item {
     list-style: none; }
     #js-data-wrapper .album-track:not(:last-child) {
       margin-bottom: 10px; }
+  #js-data-wrapper #itunes-button {
+    display: block;
+    margin-top: 35px;
+    opacity: 0.8; }
+    #js-data-wrapper #itunes-button:focus, #js-data-wrapper #itunes-button:hover {
+      border: none;
+      opacity: 1; }
   @media only screen and (min-width: 768px) {
     #js-data-wrapper {
       margin: 0 0 0 50px; } }

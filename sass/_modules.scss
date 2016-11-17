@@ -127,6 +127,16 @@ li.gallery-item {
             margin-bottom: 10px;
         }
     }
+    #itunes-button {
+        display: block;
+        margin-top: 35px;
+        opacity: 0.8;
+        &:focus,
+        &:hover {
+            border: none;
+            opacity: 1;
+        }
+    }
     @media only screen and (min-width: #{$bkp-m}) {
         margin: 0 0 0 50px;
     }
