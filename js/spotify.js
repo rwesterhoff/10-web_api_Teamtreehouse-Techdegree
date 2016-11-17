@@ -3,7 +3,10 @@
 \* --------------------------------------------------------------------------- */
 
 var $input = $('#query'),
-    imageGallery = $('#image-gallery');
+    imageGallery = $('#image-gallery'),
+    sortByName = $("label[for='name']"),
+    sortByDate = $("label[for='date']");
+
 
 
 /* --------------------------------------------------------------------------- *\
@@ -175,3 +178,43 @@ $($input).keyup(function() {
     // Immediately search for albums by using the keyword
     searchAlbums();
 });
+
+
+/* --------------------------------------------------------------------------- *\
+    SORT RESULTS
+\* --------------------------------------------------------------------------- */
+sortByName.click(function() {
+    this.attr('checked', checked);
+})
+sortByDate.click(function() {
+    this.attr('checked', checked);
+})
+function sortUnorderedList(ul, sortDescending) {
+    if (typeof ul == "string")
+        ul = document.getElementById('image-gallery');
+
+    // Idiot-proof, remove if you want
+    if (!ul) {
+        alert("The UL object is null!");
+        return;
+    }
+
+    // Get the list items and setup an array for sorting
+    var lis = ul.getElementsByTagName("LI");
+    var vals = [];
+
+    // Populate the array
+    for (var i = 0, l = lis.length; i < l; i++)
+        vals.push(lis[i].innerHTML);
+
+    // Sort it
+    vals.sort();
+
+    // Sometimes you gotta DESC
+    if (sortDescending)
+        vals.reverse();
+
+    // Change the list on the page
+    for (var i = 0, l = lis.length; i < l; i++)
+        lis[i].innerHTML = vals[i];
+}

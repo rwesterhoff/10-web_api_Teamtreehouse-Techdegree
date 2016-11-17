@@ -18,11 +18,17 @@
     </header>
     <main class="container">
         <h1>Get your favorite songs in a blink of an eye</h1>
-        <nav class="results">
+        <nav id="results-list">
+            <form action="">
+                <label for="name" class="sort-button-split" data-state="selected">Name</label>
+                <input type="radio" class="sort-button-split" id="name" name="sort" value="name" checked>
+                <label for="date" class="sort-button-split" data-state="deselected">Date</label>
+                <input type="radio" class="sort-button-split" id="date" name="sort" value="date">
+            </form>
             <ul id="image-gallery">
-               <li>
-                   <p>Do a search and see what we have for you.</p>
-               </li>
+                <li>
+                    <p>Do a search and see what we have for you.</p>
+                </li>
             </ul>
         </nav>
     </main>
