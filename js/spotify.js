@@ -110,9 +110,6 @@ function getItunesData(artist, album) {
                 dataType: 'jsonp',
                 success: function(data) {
                     var retrievedAlbumLink = data.results[0].collectionViewUrl;
-                    console.log(data);
-                    console.log('retrievedAlbumLink: ' + retrievedAlbumLink);
-                    console.log('collectionId: ' + data.results[0].collectionId);
                     $('#itunes-button').attr('href', retrievedAlbumLink);
                 },
                 error: function() {
@@ -120,8 +117,6 @@ function getItunesData(artist, album) {
                 }
             });
         };
-
-    console.log(fixedString);
     getItunesLink(fixedString);
 }
 
