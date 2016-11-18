@@ -3,9 +3,7 @@
 \* --------------------------------------------------------------------------- */
 
 var $input = $('#query'),
-    imageGallery = $('#image-gallery'),
-    sortByName = $("label[for='name']"),
-    sortByDate = $("label[for='date']");
+    imageGallery = $('#image-gallery');
 
 
 

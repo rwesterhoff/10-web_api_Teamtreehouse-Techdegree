@@ -30,6 +30,7 @@ input[type='search'] {
 
 
 /* Main container */
+
 .sort-filter {
     input[type="radio"] {
         display: none;
@@ -43,6 +44,10 @@ input[type='search'] {
         &[data-state="deselected"] {
             background-color: $color-white;
             color: $color-gray;
+            &:hover {
+                background-color: rgba($color-gray, .25);
+                color: $color-dark-gray;
+            }
         }
         &:first-child {
             border-top-right-radius: 0;

@@ -71,6 +71,9 @@ input[type='search'] {
   .sort-filter .sort-button-split[data-state="deselected"] {
     background-color: #FFF;
     color: #BBB; }
+    .sort-filter .sort-button-split[data-state="deselected"]:hover {
+      background-color: rgba(187, 187, 187, 0.25);
+      color: #333; }
   .sort-filter .sort-button-split:first-child {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0; }
