@@ -3,8 +3,33 @@
 \* --------------------------------------------------------------------------- */
 
 var $input = $('#query'),
-    imageGallery = $('#image-gallery');
+    imageGallery = $('#image-gallery'),
+    albums = [];
 
+
+/* --------------------------------------------------------------------------- *\
+    iTUNES
+\* --------------------------------------------------------------------------- */
+
+function getItunesData(artist, album) {
+    var fixedString = (artist + '+' + album).replace(/ /g, '+').toLowerCase(),
+        itunesButton = '#itunes-button',
+        getItunesLink = function(string) {
+            $.ajax({
+                url: 'https://itunes.apple.com/search/?term=' + string,
+                type: 'GET',
+                dataType: 'jsonp',
+                success: function(data) {
+                    var retrievedAlbumLink = data.results[0].collectionViewUrl;
+                    $(itunesButton).attr('href', retrievedAlbumLink);
+                },
+                error: function() {
+                    alert('error on "getAlbumId"');
+                }
+            });
+        };
+    getItunesLink(fixedString);
+}
 
 
 /* --------------------------------------------------------------------------- *\
@@ -34,7 +59,7 @@ function showDetails(id) {
                     overlayHTML += '<img src="' + albumImgUrl + '" alt="" class="album-artwork">';
                     overlayHTML += '<section id="js-data-wrapper">';
                     overlayHTML += '<h1>' + albumName + '</h1>';
-                    overlayHTML += '<p><span class="visually-hidden">Artist: </span>' + artistName + '</p>';
+                    overlayHTML += '<p>By ' + artistName + '</p>';
                     overlayHTML += '<p class="meta">Released on ';
                     overlayHTML += '<time datetime="' + albumReleased + '">' + albumReleased + '</time>';
                     overlayHTML += '</p>';
@@ -94,31 +119,18 @@ function showDetails(id) {
     });
 }
 
-
-/* --------------------------------------------------------------------------- *\
-    iTUNES
-\* --------------------------------------------------------------------------- */
-
-function getItunesData(artist, album) {
-    var fixedString = (artist + '+' + album).replace(/ /g, '+').toLowerCase(),
-        itunesButton = '#itunes-button',
-        getItunesLink = function(string) {
-            $.ajax({
-                url: 'https://itunes.apple.com/search/?term=' + string,
-                type: 'GET',
-                dataType: 'jsonp',
-                success: function(data) {
-                    var retrievedAlbumLink = data.results[0].collectionViewUrl;
-                    $('#itunes-button').attr('href', retrievedAlbumLink);
-                },
-                error: function() {
-                    alert('error on "getAlbumId"');
-                }
-            });
-        };
-    getItunesLink(fixedString);
+function getReleaseDate(id) {
+    // console.log('checking release_date');
+    var albumId = id;
+    // Get data 
+    $.ajax({
+        url: 'https://api.spotify.com/v1/albums/' + albumId,
+        success: function(details) {
+            var albumReleased = details.release_date;
+            console.log(albumReleased);
+        }
+    });
 }
-
 
 /* --------------------------------------------------------------------------- *\
     SEARCH
@@ -135,22 +147,35 @@ function searchAlbums() {
             type: 'album'
         },
         success: function(response) {
-            var albums = response.albums.items,
+            var result = response.albums.items,
                 resultHTML = '',
                 showResults = function() {
                     // Check if there are results
-                    if (albums.length === 0) {
+                    if (result.length === 0) {
                         imageGallery.html('<p>We have no search results for ' + '<strong>' + searchQuery + '</strong>' + '</p>');
                     } else {
-                        $.each(albums, function(i, album) {
+                        $.each(result, function(i, album) {
                             var albumId = album.id,
                                 albumName = album.name,
-                                albumThumbUrl = album.images[1].url;
+                                albumReleased = getReleaseDate(albumId),
+                                albumThumbUrl = album.images[1].url,
+                                result = {
+                                    'id' : albumId,
+                                    'name' : albumName,
+                                    'release_date' : albumReleased,
+                                    'thumb' : albumThumbUrl
+                                };
+                                albums.push(result);
+
                             // Add each album HTML to the result list
                             resultHTML += '<li class="gallery-item">';
                             resultHTML += '<a href="">';
                             resultHTML += '<img id="' + albumId + '" src="' + albumThumbUrl + '" alt="' + albumName + '">';
                             resultHTML += '</a>';
+                            resultHTML += '<h2>' + albumName + '</h2>';
+                            resultHTML += '<p class="meta">';
+                            resultHTML += '<time datetime="' + albumReleased + '">' + albumReleased + '</time>';
+                            resultHTML += '</p>';
                             resultHTML += '</li>';
                         });
                         // Inject the HTML into DOM (the result list)
@@ -165,8 +190,10 @@ function searchAlbums() {
                         showDetails(requestedAlbumId);
                     });
                 };
+
             showResults();
             activateThumbnails();
+            console.log(albums);
         }
     });
 }
@@ -188,32 +215,55 @@ $('input[type="radio"').change(function() {
     $('label[for="' + forAttr + '"]').attr('data-state', 'selected');
 });
 
-function sortUnorderedList(ul, sortDescending) {
-    if (typeof ul == "string")
-        ul = document.getElementById('image-gallery');
 
-    // Idiot-proof, remove if you want
-    if (!ul) {
-        alert("The UL object is null!");
-        return;
-    }
+var test = [
+    { name: 'John', date: 3 },
+    { name: 'Zoe', date: 1 },
+    { name: 'Miranda', date: 2 }
+];
 
-    // Get the list items and setup an array for sorting
-    var lis = ul.getElementsByTagName("LI");
-    var vals = [];
-
-    // Populate the array
-    for (var i = 0, l = lis.length; i < l; i++)
-        vals.push(lis[i].innerHTML);
-
-    // Sort it
-    vals.sort();
-
-    // Sometimes you gotta DESC
-    if (sortDescending)
-        vals.reverse();
-
-    // Change the list on the page
-    for (var i = 0, l = lis.length; i < l; i++)
-        lis[i].innerHTML = vals[i];
+// Sort the array with albums by date
+function sortByDate(obj) {
+    obj.sort(function(a, b) {
+        var dateA = a.date;
+        var dateB = b.date;
+        if (dateA < dateB) {
+            console.log('Compared ' + dateA + ' + ' + dateB + ', ' + dateA + ' = smaller');
+            return -1;
+        }
+        if (dateA > dateB) {
+            console.log('Compared ' + dateA + ' + ' + dateB + ', ' + dateB + ' = smaller');
+            return 1;
+        }
+        // a must be equal to b
+        console.log('dates equal');
+        return 0;
+    });
+    console.log('Sorted by date:');
+    console.log(obj);
 }
+
+// Sort the array with albums by name
+function sortByName(obj) {
+    obj.sort(function(a, b) {
+        var nameA = a.name;
+        var nameB = b.name;
+        if (nameA < nameB) {
+            // console.log('Compared ' + nameA + ' + ' + nameB + ', ' + nameA + ' = smaller');
+            return -1;
+        }
+        if (nameA > nameB) {
+            // console.log('Compared ' + nameA + ' + ' + nameB + ', ' + nameB + ' = smaller');
+            return 1;
+        }
+        // a must be equal to b
+        // console.log('dates equal');
+        return 0;
+    });
+    console.log('Sorted by name:');
+    console.log(obj);
+}
+
+sortByName(test);
+
+console.log(albums);
