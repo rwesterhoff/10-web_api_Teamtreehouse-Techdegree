@@ -113,6 +113,15 @@
 		"sC": 1,
 		"tS": 0
 		},
+	"\/js\/spotifyBACKUP.js": {
+		"ft": 64,
+		"mi": 1,
+		"oA": 0,
+		"oAP": "\/js\/min\/spotifyBACKUP-min.js",
+		"oF": 0,
+		"sC": 1,
+		"tS": 0
+		},
 	"\/Photos\/01.jpg": {
 		"ft": 16384,
 		"iS": 508430,
