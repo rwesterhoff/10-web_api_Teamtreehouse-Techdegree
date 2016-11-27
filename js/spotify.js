@@ -3,9 +3,9 @@ GLOBAL VARIABLES
 \* --------------------------------------------------------------------------- */
 
 var input = $('#query'),
-    imageGallery = $('#image-gallery'),
     searchQuery,
-    albums = [];
+    imageGallery = $('#image-gallery'),
+    albums;
 
 
 /* --------------------------------------------------------------------------- *\
@@ -14,6 +14,9 @@ SEARCH
 
 function showResults() {
     var resultHTML;
+
+    console.log('albums:');
+    console.log(albums);
 
     if (albums.length === 0) {
         imageGallery.html('<p>We have no search results for ' + '<strong>' + searchQuery + '</strong>' + '</p>');
@@ -37,8 +40,6 @@ function showResults() {
         });
         // Inject the HTML into DOM (the result list)
         imageGallery.html(resultHTML);
-        console.log('albums:');
-        console.log(albums);
     }
 }
 
@@ -57,8 +58,11 @@ function stripResults(response) {
             url: 'https://api.spotify.com/v1/albums/' + result.id,
             success: function(response) {
                 strippedResult.release_date = response.release_date;
-            }
+            },
+            complete: showResults
         });
+
+        console.log(strippedResult);
         // Push result into global albums variable
         albums.push(strippedResult);
     });
@@ -67,6 +71,7 @@ function stripResults(response) {
 // Search albums based on keyword
 function searchAlbums() {
     searchQuery = input.val();
+    albums = [];
     // Get data in Spotify
     $.ajax({
         url: 'https://api.spotify.com/v1/search',
@@ -74,8 +79,7 @@ function searchAlbums() {
             q: searchQuery,
             type: 'album'
         },
-        success: stripResults,
-        complete: showResults
+        success: stripResults
     });
 }
 
