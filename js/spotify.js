@@ -15,8 +15,10 @@ SEARCH
 function showResults() {
     var resultHTML;
 
+    //First check what sort button is selected
     checkSortButtons();
 
+    // Check if there are any albums
     if (albums.length === 0) {
         imageGallery.html('<p>We have no search results for ' + '<strong>' + searchQuery + '</strong>' + '</p>');
     } else {
@@ -52,7 +54,7 @@ function stripResults(response) {
         strippedResult.name = result.name;
         strippedResult.thumb = result.images[1].url;
 
-        //Get the releasedate 
+        //Get the release date 
         $.ajax({
             url: 'https://api.spotify.com/v1/albums/' + result.id,
             success: function(response) {
@@ -61,7 +63,6 @@ function stripResults(response) {
             complete: showResults
         });
 
-        // console.log(strippedResult);
         // Push result into global albums variable
         albums.push(strippedResult);
         // checkSortButtons(defaultSort);
@@ -72,7 +73,7 @@ function stripResults(response) {
 function searchAlbums() {
     searchQuery = input.val();
     albums = [];
-    // Get data in Spotify
+    // Get data from Spotify
     $.ajax({
         url: 'https://api.spotify.com/v1/search',
         data: {
@@ -91,26 +92,12 @@ $(input).keyup(searchAlbums);
     SORT RESULTS
 \* --------------------------------------------------------------------------- */
 
-// Change the appearance of the buttons
-$('input[type="radio"').change(changeSortButtons);
-
-(function checkDefaultSort() {
-    var forAttr = sortBy;
+//Prepare the setter function
+function setButtons(button) {
+    forAttr = button;
 
     $('label').attr('data-state', 'deselected');
     $('label[for="' + forAttr + '"]').attr('data-state', 'selected');
-})();
-
-function changeSortButtons() {
-    var forAttr = this.id;
-
-    $('label').attr('data-state', 'deselected');
-    $('label[for="' + forAttr + '"]').attr('data-state', 'selected');
-
-    sortBy = forAttr;
-
-    checkSortButtons(/*forAttr*/);
-    showResults();
 }
 
 function checkSortButtons(/*filter*/) {
@@ -125,25 +112,40 @@ function checkSortButtons(/*filter*/) {
     // showResults();
 }
 
+//Prepare the change function
+function changeSortButtons() {
+    var forAttr = this.id;
+    sortBy = forAttr;
+
+    setButtons(forAttr); 
+    checkSortButtons(/*forAttr*/);
+    showResults();
+}
+
+// First set the selected button 
+(function checkDefaultSort() {
+    var forAttr = sortBy;
+
+    setButtons(forAttr); 
+})();
+
+// Change the appearance of the buttons
+$('input[type="radio"').change(changeSortButtons);
+
 // Sort the array with albums by date
 function sortByDate(obj) {
     obj.sort(function(a, b) {
         var dateA = a.release_date;
         var dateB = b.release_date;
         if (dateA < dateB) {
-            // console.log('Compared ' + dateA + ' + ' + dateB + ', ' + dateA + ' = smaller');
             return -1;
         }
         if (dateA > dateB) {
-            // console.log('Compared ' + dateA + ' + ' + dateB + ', ' + dateB + ' = smaller');
             return 1;
         }
         // a must be equal to b
-        // console.log('dates equal');
         return 0;
     });
-    console.log('Sorted by date:');
-    console.log(obj);
 }
 
 // Sort the array with albums by name
@@ -152,19 +154,14 @@ function sortByName(obj) {
         var nameA = a.name;
         var nameB = b.name;
         if (nameA < nameB) {
-            // console.log('Compared ' + nameA + ' + ' + nameB + ', ' + nameA + ' = smaller');
             return -1;
         }
         if (nameA > nameB) {
-            // console.log('Compared ' + nameA + ' + ' + nameB + ', ' + nameB + ' = smaller');
             return 1;
         }
         // a must be equal to b
-        // console.log('dates equal');
         return 0;
     });
-    console.log('Sorted by name:');
-    console.log(obj);
 }
 
 
