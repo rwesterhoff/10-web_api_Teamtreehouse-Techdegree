@@ -5,6 +5,7 @@ GLOBAL VARIABLES
 var input = $('#query'),
     searchQuery,
     imageGallery = $('#image-gallery'),
+    sortBy = 'name',
     albums;
 
 
@@ -15,8 +16,7 @@ SEARCH
 function showResults() {
     var resultHTML;
 
-    console.log('albums:');
-    console.log(albums);
+    checkSortButtons(sortBy);
 
     if (albums.length === 0) {
         imageGallery.html('<p>We have no search results for ' + '<strong>' + searchQuery + '</strong>' + '</p>');
@@ -62,7 +62,7 @@ function stripResults(response) {
             complete: showResults
         });
 
-        console.log(strippedResult);
+        // console.log(strippedResult);
         // Push result into global albums variable
         albums.push(strippedResult);
     });
@@ -85,3 +85,79 @@ function searchAlbums() {
 
 // Search while typing anything
 $(input).keyup(searchAlbums);
+
+
+/* --------------------------------------------------------------------------- *\
+    SORT RESULTS
+\* --------------------------------------------------------------------------- */
+
+// Change the appearance of the buttons
+$('input[type="radio"').change(function() {
+    var forAttr = this.id;
+    $('label').attr('data-state', 'deselected');
+    $('label[for="' + forAttr + '"]').attr('data-state', 'selected');
+    checkSortButtons(forAttr);
+});
+
+function checkSortButtons(filter) {
+    sortBy = filter;
+
+    if (sortBy === 'name') {
+        sortResults(albums, sortByName);
+    } else {
+        sortResults(albums, sortByDate);
+    }
+}
+
+// Sort the array with albums by date
+function sortByDate(obj) {
+    obj.sort(function(a, b) {
+        var dateA = a.release_date;
+        var dateB = b.release_date;
+        if (dateA < dateB) {
+            // console.log('Compared ' + dateA + ' + ' + dateB + ', ' + dateA + ' = smaller');
+            return -1;
+        }
+        if (dateA > dateB) {
+            // console.log('Compared ' + dateA + ' + ' + dateB + ', ' + dateB + ' = smaller');
+            return 1;
+        }
+        // a must be equal to b
+        // console.log('dates equal');
+        return 0;
+    });
+    console.log('Sorted by date:');
+    console.log(obj);
+}
+
+// Sort the array with albums by name
+function sortByName(obj) {
+    obj.sort(function(a, b) {
+        var nameA = a.name;
+        var nameB = b.name;
+        if (nameA < nameB) {
+            // console.log('Compared ' + nameA + ' + ' + nameB + ', ' + nameA + ' = smaller');
+            return -1;
+        }
+        if (nameA > nameB) {
+            // console.log('Compared ' + nameA + ' + ' + nameB + ', ' + nameB + ' = smaller');
+            return 1;
+        }
+        // a must be equal to b
+        // console.log('dates equal');
+        return 0;
+    });
+    console.log('Sorted by name:');
+    console.log(obj);
+}
+
+
+function sortResults(array, callback) {
+    callback(array);
+}
+
+// TODO
+// Get selected sort buttons
+// If sort button is selected get name/id
+// If = name > sortByName
+// else sortByDate
