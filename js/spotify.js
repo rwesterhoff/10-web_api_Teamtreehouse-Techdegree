@@ -5,9 +5,8 @@ GLOBAL VARIABLES
 var input = $('#query'),
     searchQuery,
     imageGallery = $('#image-gallery'),
-    sortBy = 'name',
-    albums;
-
+    albums,
+    sortBy = $('input[type="radio"]:checked')[0].id;
 
 /* --------------------------------------------------------------------------- *\
 SEARCH
@@ -16,7 +15,7 @@ SEARCH
 function showResults() {
     var resultHTML;
 
-    checkSortButtons(sortBy);
+    checkSortButtons();
 
     if (albums.length === 0) {
         imageGallery.html('<p>We have no search results for ' + '<strong>' + searchQuery + '</strong>' + '</p>');
@@ -65,6 +64,7 @@ function stripResults(response) {
         // console.log(strippedResult);
         // Push result into global albums variable
         albums.push(strippedResult);
+        // checkSortButtons(defaultSort);
     });
 }
 
@@ -92,21 +92,37 @@ $(input).keyup(searchAlbums);
 \* --------------------------------------------------------------------------- */
 
 // Change the appearance of the buttons
-$('input[type="radio"').change(function() {
-    var forAttr = this.id;
+$('input[type="radio"').change(changeSortButtons);
+
+(function checkDefaultSort() {
+    var forAttr = sortBy;
+
     $('label').attr('data-state', 'deselected');
     $('label[for="' + forAttr + '"]').attr('data-state', 'selected');
-    checkSortButtons(forAttr);
-});
+})();
 
-function checkSortButtons(filter) {
-    sortBy = filter;
+function changeSortButtons() {
+    var forAttr = this.id;
+
+    $('label').attr('data-state', 'deselected');
+    $('label[for="' + forAttr + '"]').attr('data-state', 'selected');
+
+    sortBy = forAttr;
+
+    checkSortButtons(/*forAttr*/);
+    showResults();
+}
+
+function checkSortButtons(/*filter*/) {
+    // sortBy = filter;
 
     if (sortBy === 'name') {
         sortResults(albums, sortByName);
     } else {
         sortResults(albums, sortByDate);
     }
+
+    // showResults();
 }
 
 // Sort the array with albums by date
@@ -155,9 +171,3 @@ function sortByName(obj) {
 function sortResults(array, callback) {
     callback(array);
 }
-
-// TODO
-// Get selected sort buttons
-// If sort button is selected get name/id
-// If = name > sortByName
-// else sortByDate
