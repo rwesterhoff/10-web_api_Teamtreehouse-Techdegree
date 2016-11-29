@@ -8,19 +8,142 @@ var input = $('#query'),
     albums,
     sortBy = $('input[type="radio"]:checked')[0].id;
 
+
+/* --------------------------------------------------------------------------- *\
+    iTUNES
+\* --------------------------------------------------------------------------- */
+
+function getItunesData(artist, album) {
+    var fixedString = (artist + '+' + album).replace(/ /g, '+').toLowerCase(),
+        itunesButton = '#itunes-button',
+        getItunesLink = function(string) {
+            $.ajax({
+                url: 'https://itunes.apple.com/search/?term=' + string,
+                type: 'GET',
+                dataType: 'jsonp',
+                success: function(response) {
+                    var retrievedAlbumLink = response.results[0].collectionViewUrl;
+                    $(itunesButton).attr('href', retrievedAlbumLink);
+                },
+                error: function() {
+                    alert('error on "getAlbumId"');
+                }
+            });
+        };
+    getItunesLink(fixedString);
+}
+
+
+/* --------------------------------------------------------------------------- *\
+    OVERLAY
+\* --------------------------------------------------------------------------- */
+
+// Show the details in an overlay
+function showDetails(id) {
+    var requestedAlbumId = id;
+    // Get data 
+    $.ajax({
+        url: 'https://api.spotify.com/v1/albums/' + requestedAlbumId,
+        success: function(response) {
+
+            console.log('response: ');
+            console.log(response);
+
+            var artistName = response.artists[0].name,
+                albumName = response.name,
+                albumImgUrl = response.images[0].url,
+                albumReleased = response.release_date,
+                tracks = response.tracks.items,
+                overlayHTML = '',
+                overlay = '#js-image-overlay',
+                closeButton = '#js-close-overlay',
+                showOverlay = function() {
+                    // Opening HTML and fill with artist and album data
+                    overlayHTML += '<div id="js-image-overlay">';
+                    overlayHTML += '<div id="js-overlay-wrapper">';
+                    overlayHTML += '<button id="js-close-overlay" class="close-overlay">Close overlay</button>';
+                    overlayHTML += '<img src="' + albumImgUrl + '" alt="" class="album-artwork">';
+                    overlayHTML += '<section id="js-data-wrapper">';
+                    overlayHTML += '<h1>' + albumName + '</h1>';
+                    overlayHTML += '<p>By ' + artistName + '</p>';
+                    overlayHTML += '<p class="meta">Released on ';
+                    overlayHTML += '<time datetime="' + albumReleased + '">' + albumReleased + '</time>';
+                    overlayHTML += '</p>';
+                    overlayHTML += '<ul class="play-list">';
+                    // Populate track list
+                    $.each(tracks, function(i, track) {
+                        var trackName = track.name;
+                        overlayHTML += '<li class="album-track">' + trackName + '</li>';
+                    });
+                    // Closing the HTML
+                    overlayHTML += '<a id="itunes-button" href="" class="cta-button">';
+                    overlayHTML += '<img src="assets/itunes-badge.svg" alt="Get it oniTunes">';
+                    overlayHTML += '</a>';
+                    overlayHTML += '</ul>';
+                    overlayHTML += '</section>';
+                    overlayHTML += '</div>';
+                    overlayHTML += '</div>';
+
+                    // Inject the HTML into the DOM (on top)
+                    $('body').prepend(overlayHTML);
+                    $(overlay).hide();
+                    $(overlay).fadeIn(400);
+
+                    getItunesData(artistName, albumName);
+                },
+                hideOverlay = function() {
+                    var removeOverlay = function() {
+                        $(overlay).remove();
+                    }
+                    // Nice transition
+                    $(overlay).fadeOut(400);
+                    // Removing from DOM
+                    setTimeout(removeOverlay, 400);
+                    $(document).off('keydown');
+                },
+                prepareCloseEvent = function() {
+                    // On click of close button
+                    $(closeButton).click(function() {
+                        hideOverlay();
+                    });
+                    // On keyboard event 'esc'
+                    $(document).keyup(function(event) {
+                        if (event.keyCode === 27) {
+                            hideOverlay();
+                        }
+                    });
+                    // On click outside modal
+                    window.onclick = function(event) {
+                        var elementClicked = event.target.id;
+                        if (elementClicked === 'js-image-overlay') {
+                            hideOverlay();
+                        }
+                    };
+                };
+            showOverlay();
+            prepareCloseEvent();
+        }
+    });
+}
+
 /* --------------------------------------------------------------------------- *\
 SEARCH
 \* --------------------------------------------------------------------------- */
 
-function showResults() {
-    var resultHTML;
+function activateThumbnails() {
+    //On click of thumbnail
+    $("a").click(function(event) {
+        var requestedAlbumId = $(this).find('img').attr('id');
+        event.preventDefault();
+        // Get the additional data for the overlay by parsing the id
+        showDetails(requestedAlbumId);
+    });
+}
 
-    //First check what sort button is selected
-    checkSortButtons();
-
+function printResults(html, container) {
     // Check if there are any albums
     if (albums.length === 0) {
-        imageGallery.html('<p>We have no search results for ' + '<strong>' + searchQuery + '</strong>' + '</p>');
+        container.html('<p>We have no search results for ' + '<strong>' + searchQuery + '</strong>' + '</p>');
     } else {
         $.each(albums, function(i, album) {
             var albumId = album.id,
@@ -29,19 +152,31 @@ function showResults() {
                 albumReleased = album.release_date;
 
             // Add each album HTML to the result list
-            resultHTML += '<li class="gallery-item">';
-            resultHTML += '<a href="">';
-            resultHTML += '<img id="' + albumId + '" src="' + albumThumbUrl + '" alt="' + albumName + '">';
-            resultHTML += '</a>';
-            resultHTML += '<h2>' + albumName + '</h2>';
-            resultHTML += '<p class="meta">';
-            resultHTML += '<time datetime="' + albumReleased + '">' + albumReleased + '</time>';
-            resultHTML += '</p>';
-            resultHTML += '</li>';
+            html += '<li class="gallery-item">';
+            html += '<a href="">';
+            html += '<img id="' + albumId + '" src="' + albumThumbUrl + '" alt="' + albumName + '">';
+            html += '</a>';
+            html += '<h2>' + albumName + '</h2>';
+            html += '<p class="meta">';
+            html += '<time datetime="' + albumReleased + '">' + albumReleased + '</time>';
+            html += '</p>';
+            html += '</li>';
         });
         // Inject the HTML into DOM (the result list)
-        imageGallery.html(resultHTML);
+        container.html(html);
     }
+}
+
+function showResults() {
+    var resultHTML;
+
+    //First check what sort button is selected
+    checkSortButtons();
+    printResults(resultHTML, imageGallery);
+    activateThumbnails();
+
+    console.log('albums: ');
+    console.log(albums);
 }
 
 function stripResults(response) {
@@ -58,6 +193,8 @@ function stripResults(response) {
         $.ajax({
             url: 'https://api.spotify.com/v1/albums/' + result.id,
             success: function(response) {
+                console.log('response: ');
+                console.log(response);
                 strippedResult.release_date = response.release_date;
             },
             complete: showResults
@@ -99,11 +236,11 @@ function setButtons(button) {
     $('label[for="' + forAttr + '"]').attr('data-state', 'selected');
 }
 
-// First set the selected button 
+// First set the default selected button 
 (function checkDefaultSort() {
     var forAttr = sortBy;
 
-    setButtons(forAttr); 
+    setButtons(forAttr);
 })();
 
 function checkSortButtons() {
@@ -119,7 +256,7 @@ function changeSortButtons() {
     var forAttr = this.id;
     sortBy = forAttr;
 
-    setButtons(forAttr); 
+    setButtons(forAttr);
     checkSortButtons();
     showResults();
 }
@@ -159,12 +296,25 @@ function sortByName(obj) {
     });
 }
 
-
 function sortResults(array, callback) {
     callback(array);
 }
-
-TODO
+/*// Sort the array generic function
+function sortResults(array, value) {
+    array.sort(function(a, b) {
+        var A = a.value;
+        var B = b.value;
+        if (A < B) {
+            return -1;
+        }
+        if (A > B) {
+            return 1;
+        }
+        // a must be equal to b
+        return 0;
+    });
+}*/
+// TODO
 // Refactor showDetails
 // Add arrow functionality
 // Find 'undefined' item in the <ul>
