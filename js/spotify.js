@@ -65,7 +65,6 @@ function stripResults(response) {
 
         // Push result into global albums variable
         albums.push(strippedResult);
-        // checkSortButtons(defaultSort);
     });
 }
 
@@ -100,16 +99,19 @@ function setButtons(button) {
     $('label[for="' + forAttr + '"]').attr('data-state', 'selected');
 }
 
-function checkSortButtons(/*filter*/) {
-    // sortBy = filter;
+// First set the selected button 
+(function checkDefaultSort() {
+    var forAttr = sortBy;
 
+    setButtons(forAttr); 
+})();
+
+function checkSortButtons() {
     if (sortBy === 'name') {
         sortResults(albums, sortByName);
     } else {
         sortResults(albums, sortByDate);
     }
-
-    // showResults();
 }
 
 //Prepare the change function
@@ -118,16 +120,9 @@ function changeSortButtons() {
     sortBy = forAttr;
 
     setButtons(forAttr); 
-    checkSortButtons(/*forAttr*/);
+    checkSortButtons();
     showResults();
 }
-
-// First set the selected button 
-(function checkDefaultSort() {
-    var forAttr = sortBy;
-
-    setButtons(forAttr); 
-})();
 
 // Change the appearance of the buttons
 $('input[type="radio"').change(changeSortButtons);
@@ -168,3 +163,9 @@ function sortByName(obj) {
 function sortResults(array, callback) {
     callback(array);
 }
+
+TODO
+// Refactor showDetails
+// Add arrow functionality
+// Find 'undefined' item in the <ul>
+// Show name and date on wider screens
