@@ -356,5 +356,5 @@ function sortResults(array, value) {
 // Check if iTunesdata is available
 // If so, show button
 // Else don't!
-// Make overlay visible on desktop
+// Keep search and sort sticky on mobile
 // Add arrow functionality
