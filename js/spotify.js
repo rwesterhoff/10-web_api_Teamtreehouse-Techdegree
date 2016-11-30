@@ -170,7 +170,9 @@ function activateThumbnails() {
 
 function printResults(html, container) {
     // Check if there are any albums
-    if (albums.length === 0) {
+    if (searchQuery === '') {
+        container.html('<p>Do a search and see what we have for you.</p>');
+    } else if (albums.length === 0) {
         container.html('<p>We have no search results for ' + '<strong>' + searchQuery + '</strong>' + '</p>');
     } else {
         $.each(albums, function(i, album) {

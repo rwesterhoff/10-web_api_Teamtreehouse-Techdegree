@@ -89,6 +89,12 @@ li.gallery-item {
     float: left;
     overflow: hidden;
     list-style: none;
+    h2 {
+        font-size: 1.1em;
+        & + .meta {
+            margin-top: 0;
+        }
+    }
     a {
         display: block;
         img {
