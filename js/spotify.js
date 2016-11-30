@@ -12,23 +12,21 @@ var input = $('#query'),
 /* --------------------------------------------------------------------------- *\
     iTUNES
 \* --------------------------------------------------------------------------- */
+
 function getItunesLink(string, button) {
-            $.ajax({
-                url: 'https://itunes.apple.com/search/?term=' + string,
-                type: 'GET',
-                dataType: 'jsonp',
-                success: function(response) {
-                    var retrievedAlbumLink = response.results[0].collectionViewUrl;
-                    if (retrievedAlbumLink === 'undefined') {
-                        alert('Oops');
-                    }
-                    $(button).attr('href', retrievedAlbumLink);
-                },
-                error: function() {
-                    alert('error on "getAlbumId"');
-                }
-            });
+    $.ajax({
+        url: 'https://itunes.apple.com/search/?term=' + string,
+        type: 'GET',
+        dataType: 'jsonp',
+        success: function(response) {
+            var retrievedAlbumLink = response.results[0].collectionViewUrl;
+            $(button).attr('href', retrievedAlbumLink);
+        },
+        error: function() {
+            alert('error on "getAlbumId"');
         }
+    });
+}
 
 function getItunesData(artist, album) {
     var fixedString = (artist + '+' + album).replace(/ /g, '+').toLowerCase(),
@@ -134,6 +132,28 @@ function showDetails(id) {
     });
 }
 
+function showLoader(container, html) {
+    html += '<svg id="loader-circular" class="circular" viewBox="25 25 50 50">';
+    html += '<circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />';
+    html += '</svg>';
+
+    $(container).prepend(html);
+    $(container).hide();
+    $(container).fadeIn(400);
+}
+
+function hideLoader() {
+    var loader = $('#loader-circular'),
+        removeLoader = function() {
+            $(loader).remove();
+        }
+        // Nice transition
+    $(loader).fadeOut(400);
+    // Removing from DOM
+    setTimeout(removeLoader, 400);
+    // $(document).off('keydown');
+}
+
 /* --------------------------------------------------------------------------- *\
 SEARCH
 \* --------------------------------------------------------------------------- */
@@ -210,6 +230,8 @@ function stripResults(response) {
 
 // Search albums based on keyword
 function searchAlbums() {
+    var loader = $('#search-loader'),
+        loaderHTML = '';
     searchQuery = input.val();
     albums = [];
     // Get data from Spotify
@@ -219,8 +241,10 @@ function searchAlbums() {
             q: searchQuery,
             type: 'album'
         },
-        success: stripResults
+        success: stripResults,
+        complete: hideLoader
     });
+    showLoader(loader, loaderHTML);
 }
 
 // Search while typing anything
@@ -319,8 +343,7 @@ function sortResults(array, value) {
 }*/
 // TODO
 // Check if iTunesdata is available
-    // If so, show button
-    // Else don't!
+// If so, show button
+// Else don't!
+// Make overlay visible on desktop
 // Add arrow functionality
-// Find 'undefined' item in the <ul>
-// Show name and date on wider screens

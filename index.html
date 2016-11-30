@@ -13,14 +13,19 @@
 <body>
     <header class="page-header">
         <form id="search-form">
-            <input type="search" id="query" name="search" placeholder="Search your favorite artist">
+            <input type="search" id="query" name="search" placeholder="Search your favorite artist" autocomplete="off">
         </form>
     </header>
+    <div id="search-loader" class="loader">
+    </div>
     <main class="container">
         <h1>Get your favorite songs in a blink of an eye</h1>
         <nav id="results-list">
             <form class="sort-filter" action="">
-                <label for="name" class="sort-button-split" data-state="selected">Name</label><input type="radio" id="name" name="sort" value="name" checked><label for="date" class="sort-button-split" data-state="deselected">Date</label><input type="radio" id="date" name="sort" value="date">
+                <label for="name" class="sort-button-split" data-state="selected">Name</label>
+                <input type="radio" id="name" name="sort" value="name" checked>
+                <label for="date" class="sort-button-split" data-state="deselected">Date</label>
+                <input type="radio" id="date" name="sort" value="date">
             </form>
             <ul id="image-gallery">
                 <li>
