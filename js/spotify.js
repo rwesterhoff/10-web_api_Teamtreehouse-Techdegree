@@ -13,15 +13,15 @@ var input = $('#query'),
     iTUNES
 \* --------------------------------------------------------------------------- */
 function getItunesLink(string, button) {
-    console.log(string);
             $.ajax({
                 url: 'https://itunes.apple.com/search/?term=' + string,
                 type: 'GET',
                 dataType: 'jsonp',
                 success: function(response) {
-                    console.log('response:');
-                    console.log(response);
                     var retrievedAlbumLink = response.results[0].collectionViewUrl;
+                    if (retrievedAlbumLink === 'undefined') {
+                        alert('Oops');
+                    }
                     $(button).attr('href', retrievedAlbumLink);
                 },
                 error: function() {
@@ -50,7 +50,6 @@ function printOverlay(album, container, html) {
         tracks = album.tracks.items,
         iTunesData = getItunesData(artistName, albumName);
 
-    console.log(iTunesData);
 
     // Opening HTML and fill with artist and album data
     html += '<div id="js-image-overlay">';
@@ -97,7 +96,7 @@ function showDetails(id) {
         success: function(response) {
 
             var requestedAlbum = response,
-                overlayHTML,
+                overlayHTML = '',
                 overlay = '#js-image-overlay',
                 closeButton = '#js-close-overlay',
                 hideOverlay = function() {
@@ -177,15 +176,12 @@ function printResults(html, container) {
 }
 
 function showResults() {
-    var resultHTML;
+    var resultHTML = '';
 
     //First check what sort button is selected
     checkSortButtons();
     printResults(resultHTML, imageGallery);
     activateThumbnails();
-
-    console.log('albums: ');
-    console.log(albums);
 }
 
 function stripResults(response) {
@@ -202,8 +198,6 @@ function stripResults(response) {
         $.ajax({
             url: 'https://api.spotify.com/v1/albums/' + result.id,
             success: function(response) {
-                console.log('response: ');
-                console.log(response);
                 strippedResult.release_date = response.release_date;
             },
             complete: showResults
