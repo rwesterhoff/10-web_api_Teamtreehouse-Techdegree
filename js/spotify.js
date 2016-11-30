@@ -12,31 +12,81 @@ var input = $('#query'),
 /* --------------------------------------------------------------------------- *\
     iTUNES
 \* --------------------------------------------------------------------------- */
-
-function getItunesData(artist, album) {
-    var fixedString = (artist + '+' + album).replace(/ /g, '+').toLowerCase(),
-        itunesButton = '#itunes-button',
-        getItunesLink = function(string) {
+function getItunesLink(string, button) {
+    console.log(string);
             $.ajax({
                 url: 'https://itunes.apple.com/search/?term=' + string,
                 type: 'GET',
                 dataType: 'jsonp',
                 success: function(response) {
+                    console.log('response:');
+                    console.log(response);
                     var retrievedAlbumLink = response.results[0].collectionViewUrl;
-                    $(itunesButton).attr('href', retrievedAlbumLink);
+                    $(button).attr('href', retrievedAlbumLink);
                 },
                 error: function() {
                     alert('error on "getAlbumId"');
                 }
             });
-        };
-    getItunesLink(fixedString);
+        }
+
+function getItunesData(artist, album) {
+    var fixedString = (artist + '+' + album).replace(/ /g, '+').toLowerCase(),
+        itunesButton = '#itunes-button';
+
+    getItunesLink(fixedString, itunesButton);
 }
 
 
 /* --------------------------------------------------------------------------- *\
     OVERLAY
 \* --------------------------------------------------------------------------- */
+
+function printOverlay(album, container, html) {
+    var artistName = album.artists[0].name,
+        albumName = album.name,
+        albumImgUrl = album.images[0].url,
+        albumReleased = album.release_date,
+        tracks = album.tracks.items,
+        iTunesData = getItunesData(artistName, albumName);
+
+    console.log(iTunesData);
+
+    // Opening HTML and fill with artist and album data
+    html += '<div id="js-image-overlay">';
+    html += '<div id="js-overlay-wrapper">';
+    html += '<button id="js-close-overlay" class="close-overlay">Close overlay</button>';
+    html += '<img src="' + albumImgUrl + '" alt="" class="album-artwork">';
+    html += '<section id="js-data-wrapper">';
+    html += '<h1>' + albumName + '</h1>';
+    html += '<p>By ' + artistName + '</p>';
+    html += '<p class="meta">Released on ';
+    html += '<time datetime="' + albumReleased + '">' + albumReleased + '</time>';
+    html += '</p>';
+    html += '<ul class="play-list">';
+
+    // Populate track list
+    $.each(tracks, function(i, track) {
+        var trackName = track.name;
+        html += '<li class="album-track">' + trackName + '</li>';
+    });
+
+    // Closing the HTML
+    html += '<a id="itunes-button" href="" class="cta-button">';
+    html += '<img src="assets/itunes-badge.svg" alt="Get it oniTunes">';
+    html += '</a>';
+    html += '</ul>';
+    html += '</section>';
+    html += '</div>';
+    html += '</div>';
+
+    // Inject the HTML into the DOM (on top)
+    $('body').prepend(html);
+    $(container).hide();
+    $(container).fadeIn(400);
+
+    getItunesData(artistName, albumName);
+}
 
 // Show the details in an overlay
 function showDetails(id) {
@@ -46,56 +96,15 @@ function showDetails(id) {
         url: 'https://api.spotify.com/v1/albums/' + requestedAlbumId,
         success: function(response) {
 
-            console.log('response: ');
-            console.log(response);
-
-            var artistName = response.artists[0].name,
-                albumName = response.name,
-                albumImgUrl = response.images[0].url,
-                albumReleased = response.release_date,
-                tracks = response.tracks.items,
-                overlayHTML = '',
+            var requestedAlbum = response,
+                overlayHTML,
                 overlay = '#js-image-overlay',
                 closeButton = '#js-close-overlay',
-                showOverlay = function() {
-                    // Opening HTML and fill with artist and album data
-                    overlayHTML += '<div id="js-image-overlay">';
-                    overlayHTML += '<div id="js-overlay-wrapper">';
-                    overlayHTML += '<button id="js-close-overlay" class="close-overlay">Close overlay</button>';
-                    overlayHTML += '<img src="' + albumImgUrl + '" alt="" class="album-artwork">';
-                    overlayHTML += '<section id="js-data-wrapper">';
-                    overlayHTML += '<h1>' + albumName + '</h1>';
-                    overlayHTML += '<p>By ' + artistName + '</p>';
-                    overlayHTML += '<p class="meta">Released on ';
-                    overlayHTML += '<time datetime="' + albumReleased + '">' + albumReleased + '</time>';
-                    overlayHTML += '</p>';
-                    overlayHTML += '<ul class="play-list">';
-                    // Populate track list
-                    $.each(tracks, function(i, track) {
-                        var trackName = track.name;
-                        overlayHTML += '<li class="album-track">' + trackName + '</li>';
-                    });
-                    // Closing the HTML
-                    overlayHTML += '<a id="itunes-button" href="" class="cta-button">';
-                    overlayHTML += '<img src="assets/itunes-badge.svg" alt="Get it oniTunes">';
-                    overlayHTML += '</a>';
-                    overlayHTML += '</ul>';
-                    overlayHTML += '</section>';
-                    overlayHTML += '</div>';
-                    overlayHTML += '</div>';
-
-                    // Inject the HTML into the DOM (on top)
-                    $('body').prepend(overlayHTML);
-                    $(overlay).hide();
-                    $(overlay).fadeIn(400);
-
-                    getItunesData(artistName, albumName);
-                },
                 hideOverlay = function() {
                     var removeOverlay = function() {
-                        $(overlay).remove();
-                    }
-                    // Nice transition
+                            $(overlay).remove();
+                        }
+                        // Nice transition
                     $(overlay).fadeOut(400);
                     // Removing from DOM
                     setTimeout(removeOverlay, 400);
@@ -120,7 +129,7 @@ function showDetails(id) {
                         }
                     };
                 };
-            showOverlay();
+            printOverlay(requestedAlbum, overlay, overlayHTML);
             prepareCloseEvent();
         }
     });
@@ -315,7 +324,9 @@ function sortResults(array, value) {
     });
 }*/
 // TODO
-// Refactor showDetails
+// Check if iTunesdata is available
+    // If so, show button
+    // Else don't!
 // Add arrow functionality
 // Find 'undefined' item in the <ul>
 // Show name and date on wider screens

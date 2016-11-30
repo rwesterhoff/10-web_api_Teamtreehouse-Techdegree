@@ -32,11 +32,13 @@ input[type='search'] {
 /* Main container */
 
 .sort-filter {
+    margin: 0 0 60px 0;
     input[type="radio"] {
         display: none;
     }
     .sort-button-split {
         margin: 0;
+        display: inline-block;
         user-select: none;
         &[data-state="selected"] {
             background-color: $color-gray;
