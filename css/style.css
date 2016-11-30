@@ -42,6 +42,7 @@ figcaption {
 header.page-header {
   height: 100px;
   padding: 28px;
+  margin-top: 75px;
   text-align: center; }
 
 input[type='search'],
@@ -212,7 +213,7 @@ li.gallery-item {
   @media screen and (min-width: 1024px) {
     li.gallery-item {
       width: 200px;
-      height: 370px;
+      min-height: 200px;
       margin: 0 30px 60px 30px; } }
 
 .loader {

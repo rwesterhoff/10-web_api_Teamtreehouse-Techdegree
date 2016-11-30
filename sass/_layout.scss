@@ -24,7 +24,7 @@ li.gallery-item {
     }
     @media screen and (min-width: #{$bkp-l}) {
         width: 200px;
-        height: 370px;
+        min-height: 200px;
         margin: 0 30px 60px 30px;
     }
 }

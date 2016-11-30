@@ -99,9 +99,9 @@ function showDetails(id) {
                 closeButton = '#js-close-overlay',
                 hideOverlay = function() {
                     var removeOverlay = function() {
-                            $(overlay).remove();
-                        }
-                        // Nice transition
+                        $(overlay).remove();
+                    };
+                    // Nice transition
                     $(overlay).fadeOut(400);
                     // Removing from DOM
                     setTimeout(removeOverlay, 400);
@@ -146,8 +146,8 @@ function hideLoader() {
     var loader = $('#loader-circular'),
         removeLoader = function() {
             $(loader).remove();
-        }
-        // Nice transition
+        };
+    // Nice transition
     $(loader).fadeOut(400);
     // Removing from DOM
     setTimeout(removeLoader, 400);
@@ -242,13 +242,22 @@ function searchAlbums() {
             type: 'album'
         },
         success: stripResults,
+        error: hideLoader,
         complete: hideLoader
     });
-    showLoader(loader, loaderHTML);
+
+    if (searchQuery !== '' && loader.children().length < 1) {
+        showLoader(loader, loaderHTML);
+    }
 }
 
 // Search while typing anything
 $(input).keyup(searchAlbums);
+/*$(input).keypress(function( event ) {
+  if ( event.which == 13 ) {
+     event.preventDefault();
+     searchAlbums();
+  }*/
 
 
 /* --------------------------------------------------------------------------- *\
