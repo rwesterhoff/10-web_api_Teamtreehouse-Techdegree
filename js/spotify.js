@@ -6,7 +6,10 @@ var input = $('#query'),
     searchQuery,
     imageGallery = $('#image-gallery'),
     albums,
-    sortBy = $('input[type="radio"]:checked')[0].id;
+    sortBy = $('input[type="radio"]:checked')[0].id,
+    overlayHTML = '',
+    overlay = '#js-image-overlay',
+    closeButton = '#js-close-overlay';
 
 
 /* --------------------------------------------------------------------------- *\
@@ -43,7 +46,7 @@ function checkIndex(myArray, searchTerm, property) {
     for (var i = 0, len = myArray.length; i < len; i++) {
 
         if (myArray[i][property] === searchTerm) {
-            console.log(i);
+            console.log('index: ' + i);
             return i;
         }
     }
@@ -94,49 +97,48 @@ function printOverlay(album, container, html) {
     getItunesData(artistName, albumName);
 }
 
+function hideOverlay() {
+    var removeOverlay = function() {
+        $(overlay).remove();
+    };
+    // Nice transition
+    $(overlay).fadeOut(400);
+    // Removing from DOM
+    setTimeout(removeOverlay, 400);
+    $(document).off('keydown');
+}
+
+function prepareCloseEvent() {
+    // On click of close button
+    $(closeButton).click(function() {
+        hideOverlay();
+    });
+    // On keyboard event 'esc'
+    $(document).keyup(function(event) {
+        if (event.keyCode === 27) {
+            hideOverlay();
+        }
+    });
+    // On click outside modal
+    window.onclick = function(event) {
+        var elementClicked = event.target.id;
+        if (elementClicked === 'js-image-overlay') {
+            hideOverlay();
+        }
+    };
+}
+
 // Show the details in an overlay
-function showDetails(id) {
-    var requestedAlbumId = id,
-        albumIndex = checkIndex(albums, requestedAlbumId, "id");
+function showDetails(index) {
+    console.log('show: ' + index);
+    var requestedAlbumId = albums[index].id;
 
     // Get data 
     $.ajax({
         url: 'https://api.spotify.com/v1/albums/' + requestedAlbumId,
         success: function(response) {
 
-            var requestedAlbum = response,
-                overlayHTML = '',
-                overlay = '#js-image-overlay',
-                closeButton = '#js-close-overlay',
-                hideOverlay = function() {
-                    var removeOverlay = function() {
-                        $(overlay).remove();
-                    };
-                    // Nice transition
-                    $(overlay).fadeOut(400);
-                    // Removing from DOM
-                    setTimeout(removeOverlay, 400);
-                    $(document).off('keydown');
-                },
-                prepareCloseEvent = function() {
-                    // On click of close button
-                    $(closeButton).click(function() {
-                        hideOverlay();
-                    });
-                    // On keyboard event 'esc'
-                    $(document).keyup(function(event) {
-                        if (event.keyCode === 27) {
-                            hideOverlay();
-                        }
-                    });
-                    // On click outside modal
-                    window.onclick = function(event) {
-                        var elementClicked = event.target.id;
-                        if (elementClicked === 'js-image-overlay') {
-                            hideOverlay();
-                        }
-                    };
-                };
+            var requestedAlbum = response;
 
             printOverlay(requestedAlbum, overlay, overlayHTML);
             prepareCloseEvent();
@@ -172,16 +174,19 @@ SEARCH
 function activateThumbnails() {
     //On click of thumbnail
     $("a").click(function(event) {
-        var requestedAlbumId = $(this).find('img').attr('id');
+        var clickedAlbumId = $(this).find('img').attr('id'),
+            albumIndex = checkIndex(albums, clickedAlbumId, "id");
+            // console.log('clickedAlbumId: ' + clickedAlbumId);
+            // console.log('albumIndex: ' + albumIndex);
         event.preventDefault();
         // Get the additional data for the overlay by parsing the id
-        showDetails(requestedAlbumId);
+        showDetails(albumIndex);
     });
 }
 
 function printResults(html, container) {
     // Check if there are any albums
-    if (searchQuery === '') {
+    if (albums === '[]' || searchQuery === '') {
         container.html('<p>Do a search and see what we have for you.</p>');
     } else if (albums.length === 0) {
         container.html('<p>We have no search results for ' + '<strong>' + searchQuery + '</strong>' + '</p>');
