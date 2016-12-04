@@ -39,6 +39,15 @@ function getItunesData(artist, album) {
 /* --------------------------------------------------------------------------- *\
     OVERLAY
 \* --------------------------------------------------------------------------- */
+function checkIndex(myArray, searchTerm, property) {
+    for (var i = 0, len = myArray.length; i < len; i++) {
+
+        if (myArray[i][property] === searchTerm) {
+            console.log(i);
+            return i;
+        }
+    }
+}
 
 function printOverlay(album, container, html) {
     var artistName = album.artists[0].name,
@@ -87,7 +96,9 @@ function printOverlay(album, container, html) {
 
 // Show the details in an overlay
 function showDetails(id) {
-    var requestedAlbumId = id;
+    var requestedAlbumId = id,
+        albumIndex = checkIndex(albums, requestedAlbumId, "id");
+
     // Get data 
     $.ajax({
         url: 'https://api.spotify.com/v1/albums/' + requestedAlbumId,
@@ -126,6 +137,7 @@ function showDetails(id) {
                         }
                     };
                 };
+
             printOverlay(requestedAlbum, overlay, overlayHTML);
             prepareCloseEvent();
         }
@@ -151,7 +163,6 @@ function hideLoader() {
     $(loader).fadeOut(400);
     // Removing from DOM
     setTimeout(removeLoader, 400);
-    // $(document).off('keydown');
 }
 
 /* --------------------------------------------------------------------------- *\
@@ -237,29 +248,25 @@ function searchAlbums() {
     searchQuery = input.val();
     albums = [];
     // Get data from Spotify
-    $.ajax({
-        url: 'https://api.spotify.com/v1/search',
-        data: {
-            q: searchQuery,
-            type: 'album'
-        },
-        success: stripResults,
-        error: hideLoader,
-        complete: hideLoader
-    });
 
+    // If the query is not empty
     if (searchQuery !== '' && loader.children().length < 1) {
+        $.ajax({
+            url: 'https://api.spotify.com/v1/search',
+            data: {
+                q: searchQuery,
+                type: 'album'
+            },
+            success: stripResults,
+            error: hideLoader,
+            complete: hideLoader
+        });
         showLoader(loader, loaderHTML);
     }
 }
 
 // Search while typing anything
 $(input).keyup(searchAlbums);
-/*$(input).keypress(function( event ) {
-  if ( event.which == 13 ) {
-     event.preventDefault();
-     searchAlbums();
-  }*/
 
 
 /* --------------------------------------------------------------------------- *\
@@ -337,6 +344,8 @@ function sortByName(obj) {
 function sortResults(array, callback) {
     callback(array);
 }
+
+
 /*// Sort the array generic function
 function sortResults(array, value) {
     array.sort(function(a, b) {
