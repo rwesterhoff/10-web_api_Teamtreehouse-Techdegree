@@ -209,6 +209,41 @@ li.gallery-item {
     #js-data-wrapper {
       margin: 0 0 0 50px; } }
 
+.carousel-control {
+  position: absolute;
+  z-index: 1500;
+  top: 0;
+  display: block;
+  width: 7.5%;
+  height: 100%;
+  padding: 0;
+  cursor: pointer;
+  -webkit-transition: background .2s;
+  transition: background .2s;
+  border: 0;
+  background-color: transparent;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none; }
+  .carousel-control.left-control {
+    left: 0;
+    text-indent: -10000px;
+    background: url("../assets/arrow-prev.svg") center no-repeat;
+    background-size: 40px 40px; }
+    .carousel-control.left-control:focus, .carousel-control.left-control:hover {
+      outline: 0;
+      background: url("../assets/arrow-prev.svg") 25% center no-repeat;
+      background-size: 40px 40px; }
+  .carousel-control.right-control {
+    right: 0;
+    text-indent: 10000px;
+    background: url("../assets/arrow-next.svg") center no-repeat;
+    background-size: 40px 40px; }
+    .carousel-control.right-control:focus, .carousel-control.right-control:hover {
+      outline: 0;
+      background: url("../assets/arrow-next.svg") 75% center no-repeat;
+      background-size: 40px 40px; }
+
 .album-artwork,
 #js-data-wrapper {
   width: 100%; }

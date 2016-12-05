@@ -3,11 +3,13 @@ GLOBAL VARIABLES
 \* --------------------------------------------------------------------------- */
 
 var input = $('#query'),
-    searchQuery,
+    searchQuery = '',
     imageGallery = $('#image-gallery'),
-    albums,
     sortBy = $('input[type="radio"]:checked')[0].id,
+    albums = [],
     overlayHTML = '',
+    albumHTML = '',
+    albumIndex,
     overlay = '#js-image-overlay',
     closeButton = '#js-close-overlay';
 
@@ -52,17 +54,15 @@ function checkIndex(myArray, searchTerm, property) {
     }
 }
 
-function printOverlay(album, container, html) {
+function injectDetails(album, container, html) {
+
     var artistName = album.artists[0].name,
         albumName = album.name,
         albumImgUrl = album.images[0].url,
         albumReleased = album.release_date,
-        tracks = album.tracks.items,
-        iTunesData = getItunesData(artistName, albumName);
+        tracks = album.tracks.items;
 
-
-    // Opening HTML and fill with artist and album data
-    html += '<div id="js-image-overlay">';
+    // Fill with artist and album data
     html += '<div id="js-overlay-wrapper">';
     html += '<button id="js-close-overlay" class="close-overlay">Close overlay</button>';
     html += '<img src="' + albumImgUrl + '" alt="" class="album-artwork">';
@@ -87,14 +87,62 @@ function printOverlay(album, container, html) {
     html += '</ul>';
     html += '</section>';
     html += '</div>';
+    html += '<button id="previous-result" class="carousel-control left-control">Previous result</button>';
+    html += '<button id="next-result" class="carousel-control right-control">Next result</button>';
+
+    //Add the URL for the iTunes button via ajax request
+    getItunesData(artistName, albumName);
+
+    // Inject the HTML into the overlay
+    $(container).html(html);
+
+    //Activate after the html is injected
+    activateArrows();
+
+}
+
+function activateArrows() {
+    var prevButton = 'previous-result',
+        nextButton = 'next-result',
+        prevAlbum = function(index) {
+            if (index === 0) {
+                return albums.length - 1;
+            } else {
+                return albumIndex - 1;
+            }
+        },
+        nextAlbum = function(index) {
+            if (index === albums.length - 1) {
+                return 0;
+            } else {
+                return albumIndex + 1;
+            }
+        };
+
+    // console.log('albumIndex: ' + albumIndex);
+    // console.log('prevAlbum: ');
+    // console.log(prevAlbum(albumIndex));
+    // console.log('nextAlbum: ');
+    // console.log(nextAlbum(albumIndex));
+    // console.log('album amount: ' + albums.length);
+
+    $(prevButton).click(getDetails(prevAlbum));
+    // $(nextButton).click(getDetails(nextAlbum));
+}
+
+function printOverlay(container, html) {
+
+    html += '<div id="js-image-overlay">';
     html += '</div>';
+
 
     // Inject the HTML into the DOM (on top)
     $('body').prepend(html);
     $(container).hide();
     $(container).fadeIn(400);
 
-    getItunesData(artistName, albumName);
+    //Make the closebutton work
+    prepareCloseEvent();
 }
 
 function hideOverlay() {
@@ -129,8 +177,9 @@ function prepareCloseEvent() {
 }
 
 // Show the details in an overlay
-function showDetails(index) {
-    console.log('show: ' + index);
+function getDetails(index) {
+    console.log('show: ')
+    console.log(index);
     var requestedAlbumId = albums[index].id;
 
     // Get data 
@@ -140,8 +189,7 @@ function showDetails(index) {
 
             var requestedAlbum = response;
 
-            printOverlay(requestedAlbum, overlay, overlayHTML);
-            prepareCloseEvent();
+            injectDetails(requestedAlbum, overlay, albumHTML);
         }
     });
 }
@@ -174,21 +222,26 @@ SEARCH
 function activateThumbnails() {
     //On click of thumbnail
     $("a").click(function(event) {
-        var clickedAlbumId = $(this).find('img').attr('id'),
-            albumIndex = checkIndex(albums, clickedAlbumId, "id");
-            // console.log('clickedAlbumId: ' + clickedAlbumId);
-            // console.log('albumIndex: ' + albumIndex);
+        var clickedAlbumId = $(this).find('img').attr('id');
+
+        albumIndex = checkIndex(albums, clickedAlbumId, "id");
+        // console.log('clickedAlbumId: ' + clickedAlbumId);
+        // console.log('albumIndex: ' + albumIndex);
         event.preventDefault();
-        // Get the additional data for the overlay by parsing the id
-        showDetails(albumIndex);
+
+        //Prepare the overlay
+        printOverlay(overlay, overlayHTML);
+        // Get the additional data for the overlay by parsing the index
+        getDetails(albumIndex);
     });
 }
 
 function printResults(html, container) {
     // Check if there are any albums
-    if (albums === '[]' || searchQuery === '') {
+    /*if (albums === '[]' || searchQuery === '') {
         container.html('<p>Do a search and see what we have for you.</p>');
-    } else if (albums.length === 0) {
+    } else */
+    if (albums.length === 0) {
         container.html('<p>We have no search results for ' + '<strong>' + searchQuery + '</strong>' + '</p>');
     } else {
         $.each(albums, function(i, album) {
@@ -255,7 +308,7 @@ function searchAlbums() {
     // Get data from Spotify
 
     // If the query is not empty
-    if (searchQuery !== '' && loader.children().length < 1) {
+    if (searchQuery !== '') {
         $.ajax({
             url: 'https://api.spotify.com/v1/search',
             data: {
@@ -266,8 +319,10 @@ function searchAlbums() {
             error: hideLoader,
             complete: hideLoader
         });
-        showLoader(loader, loaderHTML);
+        if (loader.children().length < 1) { showLoader(loader, loaderHTML); }
     }
+    console.log('albums: ');
+    console.log(albums);
 }
 
 // Search while typing anything

@@ -26,7 +26,6 @@ input[type='search'],
 
 input[type='search'] {
     @media screen and (max-width: #{$bkp-m}) {
-
         font-size: 20px;
         position: fixed;
         top: 0;
@@ -212,6 +211,45 @@ li.gallery-item {
     }
     @media only screen and (min-width: #{$bkp-m}) {
         margin: 0 0 0 50px;
+    }
+}
+
+.carousel-control {
+    position: absolute;
+    z-index: 1500;
+    top: 0;
+    display: block;
+    width: 7.5%;
+    height: 100%;
+    padding: 0;
+    cursor: pointer;
+    transition: background .2s;
+    border: 0;
+    background-color: transparent;
+    appearance: none;
+    &.left-control {
+        left: 0;
+        text-indent: -10000px;
+        background: url('../assets/arrow-prev.svg') center no-repeat;
+        background-size: 40px 40px;
+        &:focus,
+        &:hover {
+            outline: 0;
+            background: url('../assets/arrow-prev.svg') 25% center no-repeat;
+            background-size: 40px 40px;
+        }
+    }
+    &.right-control {
+        right: 0;
+        text-indent: 10000px;
+        background: url('../assets/arrow-next.svg') center no-repeat;
+        background-size: 40px 40px;
+        &:focus,
+        &:hover {
+            outline: 0;
+            background: url('../assets/arrow-next.svg') 75% center no-repeat;
+            background-size: 40px 40px;
+        }
     }
 }
 
