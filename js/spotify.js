@@ -26,6 +26,11 @@ function getItunesLink(string, button) {
         dataType: 'jsonp',
         success: function(response) {
             var retrievedAlbumLink = response.results[0].collectionViewUrl;
+
+            /* -------> TESTING <-------- */
+            console.log(retrievedAlbumLink);
+            /* -------> TESTING <-------- */
+
             $(button).attr('href', retrievedAlbumLink);
         },
         error: function() {
@@ -204,6 +209,97 @@ function hideLoader() {
     setTimeout(removeLoader, 400);
 }
 
+
+/* --------------------------------------------------------------------------- *\
+    SORT RESULTS
+\* --------------------------------------------------------------------------- */
+
+//Prepare the setter function
+function setButtons(button) {
+    var forAttr = button;
+
+    $('label').attr('data-state', 'deselected');
+    $('label[for="' + forAttr + '"]').attr('data-state', 'selected');
+}
+
+// First set the default selected button 
+(function checkDefaultSort() {
+    setButtons(sortBy);
+})();
+
+// Sort the array with albums by date
+function sortByDate(obj) {
+    obj.sort(function(a, b) {
+        var dateA = a.release_date;
+        var dateB = b.release_date;
+        if (dateA < dateB) {
+            return -1;
+        }
+        if (dateA > dateB) {
+            return 1;
+        }
+        // a must be equal to b
+        return 0;
+    });
+}
+
+// Sort the array with albums by name
+function sortByName(obj) {
+    obj.sort(function(a, b) {
+        var nameA = a.name;
+        var nameB = b.name;
+        if (nameA < nameB) {
+            return -1;
+        }
+        if (nameA > nameB) {
+            return 1;
+        }
+        // a must be equal to b
+        return 0;
+    });
+}
+
+function sortResults(array, callback) {
+    callback(array);
+}
+function checkSortButtons() {
+    if (sortBy === 'name') {
+        sortResults(albums, sortByName);
+    } else {
+        sortResults(albums, sortByDate);
+    }
+}
+
+//Prepare the change function
+function changeSortButtons() {
+    var buttonClicked = this.id;
+    sortBy = buttonClicked;
+
+    setButtons(buttonClicked);
+    checkSortButtons();
+    showResults();
+}
+
+// Change the appearance of the buttons
+$('input[type="radio"').change(changeSortButtons);
+
+/*// Sort the array generic function
+function sortResults(array, value) {
+    array.sort(function(a, b) {
+        var A = a.value;
+        var B = b.value;
+        if (A < B) {
+            return -1;
+        }
+        if (A > B) {
+            return 1;
+        }
+        // a must be equal to b
+        return 0;
+    });
+}*/
+
+
 /* --------------------------------------------------------------------------- *\
 SEARCH
 \* --------------------------------------------------------------------------- */
@@ -308,106 +404,11 @@ function searchAlbums() {
         });
         if (loader.children().length < 1) { showLoader(loader, loaderHTML); }
     }
-    console.log('albums: ');
-    console.log(albums);
 }
 
 // Search while typing anything
 $(input).keyup(searchAlbums);
 
-
-/* --------------------------------------------------------------------------- *\
-    SORT RESULTS
-\* --------------------------------------------------------------------------- */
-
-//Prepare the setter function
-function setButtons(button) {
-    forAttr = button;
-
-    $('label').attr('data-state', 'deselected');
-    $('label[for="' + forAttr + '"]').attr('data-state', 'selected');
-}
-
-// First set the default selected button 
-(function checkDefaultSort() {
-    var forAttr = sortBy;
-
-    setButtons(forAttr);
-})();
-
-function checkSortButtons() {
-    if (sortBy === 'name') {
-        sortResults(albums, sortByName);
-    } else {
-        sortResults(albums, sortByDate);
-    }
-}
-
-//Prepare the change function
-function changeSortButtons() {
-    var forAttr = this.id;
-    sortBy = forAttr;
-
-    setButtons(forAttr);
-    checkSortButtons();
-    showResults();
-}
-
-// Change the appearance of the buttons
-$('input[type="radio"').change(changeSortButtons);
-
-// Sort the array with albums by date
-function sortByDate(obj) {
-    obj.sort(function(a, b) {
-        var dateA = a.release_date;
-        var dateB = b.release_date;
-        if (dateA < dateB) {
-            return -1;
-        }
-        if (dateA > dateB) {
-            return 1;
-        }
-        // a must be equal to b
-        return 0;
-    });
-}
-
-// Sort the array with albums by name
-function sortByName(obj) {
-    obj.sort(function(a, b) {
-        var nameA = a.name;
-        var nameB = b.name;
-        if (nameA < nameB) {
-            return -1;
-        }
-        if (nameA > nameB) {
-            return 1;
-        }
-        // a must be equal to b
-        return 0;
-    });
-}
-
-function sortResults(array, callback) {
-    callback(array);
-}
-
-
-/*// Sort the array generic function
-function sortResults(array, value) {
-    array.sort(function(a, b) {
-        var A = a.value;
-        var B = b.value;
-        if (A < B) {
-            return -1;
-        }
-        if (A > B) {
-            return 1;
-        }
-        // a must be equal to b
-        return 0;
-    });
-}*/
 // TODO
 // Check if iTunesdata is available
 // If so, show button
