@@ -149,12 +149,9 @@ function injectDetails(album, container, html) {
     // Inject the HTML into the overlay
     $(container).html(html);
 
-    //Activate after the html is injected
-    activateArrows();
-
     //Make the closebutton work
     prepareCloseEvent();
-
+    
     //Add the URL for the iTunes button via ajax request
     setItunesData(artistName, albumName);
 
@@ -190,6 +187,9 @@ function printOverlay(container, html) {
     $('body').prepend(html);
     $(container).hide();
     $(container).fadeIn(400);
+
+    //Activate after the html is injected
+    activateArrows();
 }
 
 function showLoader(container, html) {
@@ -319,6 +319,7 @@ function activateThumbnails() {
 
         //Prepare the overlay
         printOverlay(overlay, overlayHTML);
+
         // Get the additional data for the overlay by parsing the index
         getDetails(albumIndex);
     });
