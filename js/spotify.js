@@ -28,18 +28,21 @@ function getItunesLink(string, button) {
             var retrievedAlbumLink = response.results[0].collectionViewUrl;
 
             /* -------> TESTING <-------- */
+            console.log('retrievedAlbumLink: ');
             console.log(retrievedAlbumLink);
             /* -------> TESTING <-------- */
 
             $(button).attr('href', retrievedAlbumLink);
+            $(button).show();
         },
         error: function() {
-            alert('error on "getItunesLink"');
+            alert('error');
+            $(button).hide();
         }
     });
 }
 
-function getItunesData(artist, album) {
+function setItunesData(artist, album) {
     var fixedString = (artist + '+' + album).replace(/ /g, '+').toLowerCase(),
         itunesButton = '#itunes-button';
 
@@ -154,7 +157,7 @@ function injectDetails(album, container, html) {
     prepareCloseEvent();
 
     //Add the URL for the iTunes button via ajax request
-    getItunesData(artistName, albumName);
+    setItunesData(artistName, albumName);
 
 }
 
@@ -264,6 +267,7 @@ function sortByName(obj) {
 function sortResults(array, callback) {
     callback(array);
 }
+
 function checkSortButtons() {
     if (sortBy === 'name') {
         sortResults(albums, sortByName);
@@ -409,7 +413,11 @@ function searchAlbums() {
 }
 
 // Search while typing anything
-$(input).keyup(searchAlbums);
+// $(input).keyup(searchAlbums);
+$('#search').click(function(e) {
+    e.preventDefault();
+    searchAlbums();
+});
 
 // TODO
 // Check if iTunesdata is available
