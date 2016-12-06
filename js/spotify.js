@@ -28,7 +28,7 @@ function getItunesLink(string, button) {
             $(button).attr('href', retrievedAlbumLink);
         },
         error: function() {
-            alert('error on "getAlbumId"');
+            alert('error on "getItunesLink"');
         }
     });
 }
@@ -44,10 +44,10 @@ function getItunesData(artist, album) {
 /* --------------------------------------------------------------------------- *\
     OVERLAY
 \* --------------------------------------------------------------------------- */
-function checkIndex(myArray, searchTerm, property) {
-    for (var i = 0, len = myArray.length; i < len; i++) {
-
-        if (myArray[i][property] === searchTerm) {
+function checkIndex(array, term, property) {
+    for (var i = 0, len = array.length; i < len; i++) {
+        // Check if the term matches one of the objects properties
+        if (array[i][property] === term) {
             console.log('index: ' + i);
             return i;
         }
@@ -90,43 +90,46 @@ function injectDetails(album, container, html) {
     html += '<button id="previous-result" class="carousel-control left-control">Previous result</button>';
     html += '<button id="next-result" class="carousel-control right-control">Next result</button>';
 
-    //Add the URL for the iTunes button via ajax request
-    getItunesData(artistName, albumName);
-
     // Inject the HTML into the overlay
     $(container).html(html);
 
     //Activate after the html is injected
-    activateArrows();
+    // activateArrows();
+
+    //Add the URL for the iTunes button via ajax request
+    getItunesData(artistName, albumName);
 
 }
 
 function activateArrows() {
     var prevButton = 'previous-result',
         nextButton = 'next-result',
-        prevAlbum = function(index) {
-            if (index === 0) {
+        prevAlbum = function() {
+            if (albumIndex === 0) {
                 return albums.length - 1;
             } else {
                 return albumIndex - 1;
             }
         },
-        nextAlbum = function(index) {
-            if (index === albums.length - 1) {
+        nextAlbum = function() {
+            if (albumIndex === albums.length - 1) {
                 return 0;
             } else {
                 return albumIndex + 1;
             }
         };
 
-    // console.log('albumIndex: ' + albumIndex);
-    // console.log('prevAlbum: ');
-    // console.log(prevAlbum(albumIndex));
-    // console.log('nextAlbum: ');
-    // console.log(nextAlbum(albumIndex));
-    // console.log('album amount: ' + albums.length);
+    console.log('albumIndex: ' + albumIndex);
+    console.log('prevAlbum: ');
+    console.log(prevAlbum());
+    console.log('nextAlbum: ');
+    console.log(nextAlbum());
+    console.log('album amount: ' + albums.length);
+    console.log(prevButton);
+    console.log(nextButton);
 
-    $(prevButton).click(getDetails(prevAlbum));
+    $(prevButton).click(function() { alert('clicked'); });
+    // $(prevButton).click(getDetails(prevAlbum));
     // $(nextButton).click(getDetails(nextAlbum));
 }
 
@@ -178,8 +181,6 @@ function prepareCloseEvent() {
 
 // Show the details in an overlay
 function getDetails(index) {
-    console.log('show: ')
-    console.log(index);
     var requestedAlbumId = albums[index].id;
 
     // Get data 
@@ -225,8 +226,6 @@ function activateThumbnails() {
         var clickedAlbumId = $(this).find('img').attr('id');
 
         albumIndex = checkIndex(albums, clickedAlbumId, "id");
-        // console.log('clickedAlbumId: ' + clickedAlbumId);
-        // console.log('albumIndex: ' + albumIndex);
         event.preventDefault();
 
         //Prepare the overlay
