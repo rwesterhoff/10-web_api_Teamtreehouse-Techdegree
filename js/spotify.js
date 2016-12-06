@@ -32,12 +32,7 @@ function getItunesLink(string) {
             // Setting the HTML
             html += '<a id="itunes-button" href="' + retrievedAlbumLink + '" class="cta-button">';
             html += '<img src="assets/itunes-badge.svg" alt="Get it oniTunes">';
-            html += '</a>';;
-
-            /* -------> TESTING <-------- */
-            console.log('retrievedAlbumLink: ');
-            console.log(retrievedAlbumLink);
-            /* -------> TESTING <-------- */
+            html += '</a>';
 
             $('#play-list').append(html);
         }
@@ -413,10 +408,10 @@ function searchAlbums() {
 
 // Search while typing anything
 $(input).keyup(searchAlbums);
-// $('#search').click(function(e) {
-//     e.preventDefault();
-//     searchAlbums();
-// });
+/*$('#search').click(function(e) {
+    e.preventDefault();
+    searchAlbums();
+});*/
 
 // TODO
 // Check if iTunesdata is available
