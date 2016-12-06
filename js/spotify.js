@@ -36,7 +36,6 @@ function getItunesLink(string, button) {
             $(button).show();
         },
         error: function() {
-            alert('error');
             $(button).hide();
         }
     });
@@ -379,13 +378,14 @@ function stripResults(response) {
             url: 'https://api.spotify.com/v1/albums/' + result.id,
             success: function(response) {
                 strippedResult.release_date = response.release_date;
-            },
-            complete: showResults
+            }
         });
 
         // Push result into global albums variable
         albums.push(strippedResult);
     });
+
+    showResults();
 }
 
 // Search albums based on keyword
@@ -413,11 +413,11 @@ function searchAlbums() {
 }
 
 // Search while typing anything
-// $(input).keyup(searchAlbums);
-$('#search').click(function(e) {
-    e.preventDefault();
-    searchAlbums();
-});
+$(input).keyup(searchAlbums);
+// $('#search').click(function(e) {
+//     e.preventDefault();
+//     searchAlbums();
+// });
 
 // TODO
 // Check if iTunesdata is available
