@@ -91,7 +91,7 @@ input[type='search'],
       background-color: #FFF; }
       .sort-filter .sort-button-split[data-state='deselected']:hover {
         color: #333;
-        background-color: rgba(187, 187, 187, 0.25); }
+        background-color: #EAEAEA; }
     .sort-filter .sort-button-split:first-child {
       border-top-right-radius: 0;
       border-bottom-right-radius: 0; }

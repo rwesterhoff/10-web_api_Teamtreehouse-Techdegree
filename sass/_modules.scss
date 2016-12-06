@@ -61,7 +61,7 @@ input[type='search'] {
             background-color: $color-white;
             &:hover {
                 color: $color-dark-gray;
-                background-color: rgba($color-gray, .25);
+                background-color: $color-light-gray;
             }
         }
         &:first-child {
