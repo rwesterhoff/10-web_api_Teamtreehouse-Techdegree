@@ -54,6 +54,57 @@ function checkIndex(array, term, property) {
     }
 }
 
+function activateArrows() {
+    var prevButton = '#previous-result',
+        nextButton = '#next-result';
+
+    $(prevButton).click(function() {
+        if (albumIndex === 0) {
+            getDetails(albums.length - 1);
+        } else {
+            getDetails(albumIndex - 1);
+        }
+    });
+    $(nextButton).click(function() {
+        if (albumIndex === albums.length - 1) {
+            getDetails(0);
+        } else {
+            getDetails(albumIndex + 1);
+        }
+    });
+}
+
+function hideOverlay() {
+    var removeOverlay = function() {
+        $(overlay).remove();
+    };
+    // Nice transition
+    $(overlay).fadeOut(400);
+    // Removing from DOM
+    setTimeout(removeOverlay, 400);
+    $(document).off('keydown');
+}
+
+function prepareCloseEvent() {
+    // On click of close button
+    $(closeButton).click(function() {
+        hideOverlay();
+    });
+    // On keyboard event 'esc'
+    $(document).keyup(function(event) {
+        if (event.keyCode === 27) {
+            hideOverlay();
+        }
+    });
+    // On click outside modal
+    window.onclick = function(event) {
+        var elementClicked = event.target.id;
+        if (elementClicked === 'js-image-overlay') {
+            hideOverlay();
+        }
+    };
+}
+
 function injectDetails(album, container, html) {
 
     var artistName = album.artists[0].name,
@@ -100,25 +151,22 @@ function injectDetails(album, container, html) {
 
 }
 
-function activateArrows() {
-    var prevButton = '#previous-result',
-        nextButton = '#next-result';
+// Show the details in an overlay
+function getDetails(index) {
+    var requestedAlbumId = albums[index].id;
 
-    $(prevButton).click(function() {
-        if (albumIndex === 0) {
-            getDetails(albums.length - 1);
-        } else {
-            getDetails(albumIndex - 1);
-        }
-    });
-    $(nextButton).click(function() {
-        if (albumIndex === albums.length - 1) {
-            getDetails(0);
-        } else {
-            getDetails(albumIndex + 1);
+    // Get data 
+    $.ajax({
+        url: 'https://api.spotify.com/v1/albums/' + requestedAlbumId,
+        success: function(response) {
+
+            var requestedAlbum = response;
+
+            injectDetails(requestedAlbum, overlayWrapper, albumHTML);
         }
     });
 }
+
 
 function printOverlay(container, html) {
 
@@ -133,55 +181,6 @@ function printOverlay(container, html) {
     $('body').prepend(html);
     $(container).hide();
     $(container).fadeIn(400);
-}
-
-function hideOverlay() {
-    var removeOverlay = function() {
-        $(overlay).remove();
-    };
-    // Nice transition
-    $(overlay).fadeOut(400);
-    // Removing from DOM
-    setTimeout(removeOverlay, 400);
-    $(document).off('keydown');
-}
-
-function prepareCloseEvent() {
-    // On click of close button
-    $(closeButton).click(function() {
-        hideOverlay();
-    });
-    // On keyboard event 'esc'
-    $(document).keyup(function(event) {
-        if (event.keyCode === 27) {
-            hideOverlay();
-        }
-    });
-    // On click outside modal
-    window.onclick = function(event) {
-        var elementClicked = event.target.id;
-        if (elementClicked === 'js-image-overlay') {
-            hideOverlay();
-        }
-    };
-}
-
-// Show the details in an overlay
-function getDetails(index) {
-    var requestedAlbumId = albums[index].id;
-
-    console.log(requestedAlbumId);
-
-    // Get data 
-    $.ajax({
-        url: 'https://api.spotify.com/v1/albums/' + requestedAlbumId,
-        success: function(response) {
-
-            var requestedAlbum = response;
-
-            injectDetails(requestedAlbum, overlayWrapper, albumHTML);
-        }
-    });
 }
 
 function showLoader(container, html) {

@@ -253,6 +253,30 @@ li.gallery-item {
             background-size: 20px 20px;
         }
     }
+    @media only screen and (min-width: #{$bkp-l}) {
+        &.left-control {
+            left: calc(50% - 512px);
+            transform: translate(-100%, -50%);
+            background: url('../assets/arrow-prev.svg') center no-repeat;
+            background-size: 40px 40px;
+            &:focus,
+            &:hover {
+                background: url('../assets/arrow-prev.svg') 25% center no-repeat;
+                background-size: 40px 40px;
+            }
+        }
+        &.right-control {
+            right: calc(50% - 512px);
+            transform: translate(100%, -50%);
+            background: url('../assets/arrow-next.svg') center no-repeat;
+            background-size: 40px 40px;
+            &:focus,
+            &:hover {
+                background: url('../assets/arrow-next.svg') 75% center no-repeat;
+                background-size: 40px 40px;
+            }
+        }
+    }
 }
 
 .album-artwork,
