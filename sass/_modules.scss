@@ -216,12 +216,13 @@ li.gallery-item {
 }
 
 .carousel-control {
-    position: absolute;
+    position: fixed;
     z-index: 1500;
-    top: 0;
+    top: 50%;
+    transform: translate(0, -50%);
     display: block;
-    width: 7.5%;
-    height: 100%;
+    width: 50px;
+    height: 50px;
     padding: 0;
     cursor: pointer;
     transition: background .2s;
@@ -231,25 +232,25 @@ li.gallery-item {
     &.left-control {
         left: 0;
         text-indent: -10000px;
-        background: url('../assets/arrow-prev.svg') center no-repeat;
-        background-size: 40px 40px;
+        background: url('../assets/arrow-prev-black.svg') center no-repeat;
+        background-size: 20px 20px;
         &:focus,
         &:hover {
             outline: 0;
-            background: url('../assets/arrow-prev.svg') 25% center no-repeat;
-            background-size: 40px 40px;
+            background: url('../assets/arrow-prev-black.svg') 25% center no-repeat;
+            background-size: 20px 20px;
         }
     }
     &.right-control {
         right: 0;
-        text-indent: 10000px;
-        background: url('../assets/arrow-next.svg') center no-repeat;
-        background-size: 40px 40px;
+        text-indent: -10000px;
+        background: url('../assets/arrow-next-black.svg') center no-repeat;
+        background-size: 20px 20px;
         &:focus,
         &:hover {
             outline: 0;
-            background: url('../assets/arrow-next.svg') 75% center no-repeat;
-            background-size: 40px 40px;
+            background: url('../assets/arrow-next-black.svg') 75% center no-repeat;
+            background-size: 20px 20px;
         }
     }
 }

@@ -11,6 +11,7 @@ var input = $('#query'),
     albumHTML = '',
     albumIndex,
     overlay = '#js-image-overlay',
+    overlayWrapper = '#js-overlay-wrapper',
     closeButton = '#js-close-overlay';
 
 
@@ -48,7 +49,6 @@ function checkIndex(array, term, property) {
     for (var i = 0, len = array.length; i < len; i++) {
         // Check if the term matches one of the objects properties
         if (array[i][property] === term) {
-            console.log('index: ' + i);
             return i;
         }
     }
@@ -62,8 +62,7 @@ function injectDetails(album, container, html) {
         albumReleased = album.release_date,
         tracks = album.tracks.items;
 
-    // Fill with artist and album data
-    html += '<div id="js-overlay-wrapper">';
+
     html += '<button id="js-close-overlay" class="close-overlay">Close overlay</button>';
     html += '<img src="' + albumImgUrl + '" alt="" class="album-artwork">';
     html += '<section id="js-data-wrapper">';
@@ -86,15 +85,15 @@ function injectDetails(album, container, html) {
     html += '</a>';
     html += '</ul>';
     html += '</section>';
-    html += '</div>';
-    html += '<button id="previous-result" class="carousel-control left-control">Previous result</button>';
-    html += '<button id="next-result" class="carousel-control right-control">Next result</button>';
 
     // Inject the HTML into the overlay
     $(container).html(html);
 
     //Activate after the html is injected
-    // activateArrows();
+    activateArrows();
+
+    //Make the closebutton work
+    prepareCloseEvent();
 
     //Add the URL for the iTunes button via ajax request
     getItunesData(artistName, albumName);
@@ -102,50 +101,38 @@ function injectDetails(album, container, html) {
 }
 
 function activateArrows() {
-    var prevButton = 'previous-result',
-        nextButton = 'next-result',
-        prevAlbum = function() {
-            if (albumIndex === 0) {
-                return albums.length - 1;
-            } else {
-                return albumIndex - 1;
-            }
-        },
-        nextAlbum = function() {
-            if (albumIndex === albums.length - 1) {
-                return 0;
-            } else {
-                return albumIndex + 1;
-            }
-        };
+    var prevButton = '#previous-result',
+        nextButton = '#next-result';
 
-    console.log('albumIndex: ' + albumIndex);
-    console.log('prevAlbum: ');
-    console.log(prevAlbum());
-    console.log('nextAlbum: ');
-    console.log(nextAlbum());
-    console.log('album amount: ' + albums.length);
-    console.log(prevButton);
-    console.log(nextButton);
-
-    $(prevButton).click(function() { alert('clicked'); });
-    // $(prevButton).click(getDetails(prevAlbum));
-    // $(nextButton).click(getDetails(nextAlbum));
+    $(prevButton).click(function() {
+        if (albumIndex === 0) {
+            getDetails(albums.length - 1);
+        } else {
+            getDetails(albumIndex - 1);
+        }
+    });
+    $(nextButton).click(function() {
+        if (albumIndex === albums.length - 1) {
+            getDetails(0);
+        } else {
+            getDetails(albumIndex + 1);
+        }
+    });
 }
 
 function printOverlay(container, html) {
 
     html += '<div id="js-image-overlay">';
+    html += '<div id="js-overlay-wrapper">';
     html += '</div>';
-
+    html += '<button id="previous-result" class="carousel-control left-control">Previous result</button>';
+    html += '<button id="next-result" class="carousel-control right-control">Next result</button>';
+    html += '</div>';
 
     // Inject the HTML into the DOM (on top)
     $('body').prepend(html);
     $(container).hide();
     $(container).fadeIn(400);
-
-    //Make the closebutton work
-    prepareCloseEvent();
 }
 
 function hideOverlay() {
@@ -183,6 +170,8 @@ function prepareCloseEvent() {
 function getDetails(index) {
     var requestedAlbumId = albums[index].id;
 
+    console.log(requestedAlbumId);
+
     // Get data 
     $.ajax({
         url: 'https://api.spotify.com/v1/albums/' + requestedAlbumId,
@@ -190,7 +179,7 @@ function getDetails(index) {
 
             var requestedAlbum = response;
 
-            injectDetails(requestedAlbum, overlay, albumHTML);
+            injectDetails(requestedAlbum, overlayWrapper, albumHTML);
         }
     });
 }

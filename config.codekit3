@@ -31,11 +31,31 @@
 		"oAP": "\/_reference\/Web API Endpoint Reference - Spotify Developer.webloc",
 		"oF": 0
 		},
+	"\/assets\/arrow-next-black.svg": {
+		"ft": 2097152,
+		"miP": 0,
+		"oA": 2,
+		"oAP": "\/assets\/arrow-next-black.svg",
+		"oF": 0,
+		"opt": 0,
+		"plM": 3758088159,
+		"prP": 0
+		},
 	"\/assets\/arrow-next.svg": {
 		"ft": 2097152,
 		"miP": 0,
 		"oA": 2,
 		"oAP": "\/assets\/arrow-next.svg",
+		"oF": 0,
+		"opt": 0,
+		"plM": 3758088159,
+		"prP": 0
+		},
+	"\/assets\/arrow-prev-black.svg": {
+		"ft": 2097152,
+		"miP": 0,
+		"oA": 2,
+		"oAP": "\/assets\/arrow-prev-black.svg",
 		"oF": 0,
 		"opt": 0,
 		"plM": 3758088159,
