@@ -65,17 +65,19 @@ function activateArrows() {
 
     $(prevButton).click(function() {
         if (albumIndex === 0) {
-            getDetails(albums.length - 1);
+            albumIndex = albums.length - 1;
         } else {
-            getDetails(albumIndex - 1);
+            albumIndex -= 1;
         }
+        getDetails(albumIndex);
     });
     $(nextButton).click(function() {
         if (albumIndex === albums.length - 1) {
-            getDetails(0);
+            albumIndex = 0;
         } else {
-            getDetails(albumIndex + 1);
+            albumIndex += 1;
         }
+        getDetails(albumIndex);
     });
 }
 
