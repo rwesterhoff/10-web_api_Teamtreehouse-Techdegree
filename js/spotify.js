@@ -19,33 +19,35 @@ var input = $('#query'),
     iTUNES
 \* --------------------------------------------------------------------------- */
 
-function getItunesLink(string, button) {
+function getItunesLink(string) {
+
     $.ajax({
         url: 'https://itunes.apple.com/search/?term=' + string,
         type: 'GET',
         dataType: 'jsonp',
         success: function(response) {
-            var retrievedAlbumLink = response.results[0].collectionViewUrl;
+            var retrievedAlbumLink = response.results[0].collectionViewUrl,
+                html = '';
+
+            // Setting the HTML
+            html += '<a id="itunes-button" href="' + retrievedAlbumLink + '" class="cta-button">';
+            html += '<img src="assets/itunes-badge.svg" alt="Get it oniTunes">';
+            html += '</a>';;
 
             /* -------> TESTING <-------- */
             console.log('retrievedAlbumLink: ');
             console.log(retrievedAlbumLink);
             /* -------> TESTING <-------- */
 
-            $(button).attr('href', retrievedAlbumLink);
-            $(button).show();
-        },
-        error: function() {
-            $(button).hide();
+            $('#play-list').append(html);
         }
     });
 }
 
 function setItunesData(artist, album) {
-    var fixedString = (artist + '+' + album).replace(/ /g, '+').toLowerCase(),
-        itunesButton = '#itunes-button';
-
-    getItunesLink(fixedString, itunesButton);
+    var fixedString = (artist + '+' + album).replace(/ /g, '+').toLowerCase();
+    console.log(fixedString);
+    getItunesLink(fixedString);
 }
 
 
@@ -131,7 +133,7 @@ function injectDetails(album, container, html) {
     html += '<p class="meta">Released on ';
     html += '<time datetime="' + albumReleased + '">' + albumReleased + '</time>';
     html += '</p>';
-    html += '<ul class="play-list">';
+    html += '<ul id="play-list">';
 
     // Populate track list
     $.each(tracks, function(i, track) {
@@ -139,10 +141,6 @@ function injectDetails(album, container, html) {
         html += '<li class="album-track">' + trackName + '</li>';
     });
 
-    // Closing the HTML
-    html += '<a id="itunes-button" href="" class="cta-button">';
-    html += '<img src="assets/itunes-badge.svg" alt="Get it oniTunes">';
-    html += '</a>';
     html += '</ul>';
     html += '</section>';
 
@@ -151,7 +149,7 @@ function injectDetails(album, container, html) {
 
     //Make the closebutton work
     prepareCloseEvent();
-    
+
     //Add the URL for the iTunes button via ajax request
     setItunesData(artistName, albumName);
 
