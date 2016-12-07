@@ -318,34 +318,31 @@ function activateThumbnails() {
     });
 }
 
-function printResults(html, container) {
-    // Check if there are any albums
-    /*if (albums === '[]' || searchQuery === '') {
-        container.html('<p>Do a search and see what we have for you.</p>');
-    } else */
-    if (albums.length === 0) {
-        container.html('<p>We have no search results for ' + '<strong>' + searchQuery + '</strong>' + '</p>');
-    } else {
-        $.each(albums, function(i, album) {
-            var albumId = album.id,
-                albumName = album.name,
-                albumThumbUrl = album.thumb,
-                albumReleased = album.release_date;
 
-            // Add each album HTML to the result list
-            html += '<li class="gallery-item">';
-            html += '<a href="">';
-            html += '<img id="' + albumId + '" src="' + albumThumbUrl + '" alt="' + albumName + '">';
-            html += '</a>';
-            html += '<h2>' + albumName + '</h2>';
-            html += '<p class="meta">';
-            html += '<time datetime="' + albumReleased + '">' + albumReleased + '</time>';
-            html += '</p>';
-            html += '</li>';
-        });
-        // Inject the HTML into DOM (the result list)
-        container.html(html);
-    }
+function printMessage(container, query) {
+    container.html('<p>We have no search results for ' + '<strong>' + query + '</strong>' + '</p>');
+}
+
+function printResults(html, container) {
+    $.each(albums, function(i, album) {
+        var albumId = album.id,
+            albumName = album.name,
+            albumThumbUrl = album.thumb,
+            albumReleased = album.release_date;
+
+        // Add each album HTML to the result list
+        html += '<li class="gallery-item">';
+        html += '<a href="">';
+        html += '<img id="' + albumId + '" src="' + albumThumbUrl + '" alt="' + albumName + '">';
+        html += '</a>';
+        html += '<h2>' + albumName + '</h2>';
+        html += '<p class="meta">';
+        html += '<time datetime="' + albumReleased + '">' + albumReleased + '</time>';
+        html += '</p>';
+        html += '</li>';
+    });
+    // Inject the HTML into DOM (the result list)
+    container.html(html);
 }
 
 function showResults() {
@@ -399,7 +396,6 @@ function searchAlbums() {
                 type: 'album'
             },
             success: stripResults,
-            error: hideLoader,
             complete: hideLoader
         });
         if (loader.children().length < 1) { showLoader(loader, loaderHTML); }
@@ -408,12 +404,14 @@ function searchAlbums() {
 
 // Search while typing anything
 $(input).keyup(searchAlbums);
-/*$('#search').click(function(e) {
-    e.preventDefault();
-    searchAlbums();
+/*$(input).keyup(function(event) {
+    if (event.keyCode === 13) {
+        event.preventDefault();
+    }
 });*/
 
 // TODO
+
 // Check if iTunesdata is available
 // If so, show button
 // Else don't!

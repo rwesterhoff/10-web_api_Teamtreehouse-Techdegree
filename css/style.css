@@ -159,6 +159,9 @@ li.gallery-item {
   max-width: 960px;
   padding: 50px;
   background-color: #FFF; }
+  @media screen and (max-width: 480px) {
+    #js-overlay-wrapper {
+      min-height: 100%; } }
   @media screen and (min-width: 768px) {
     #js-overlay-wrapper {
       top: 15%;

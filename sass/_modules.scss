@@ -151,6 +151,9 @@ li.gallery-item {
     max-width: 960px;
     padding: 50px;
     background-color: $color-white;
+    @media screen and (max-width: #{$bkp-s}) {
+        min-height: 100%;
+    }
     @media screen and (min-width: #{$bkp-m}) {
         top: 15%;
         left: 50%;
