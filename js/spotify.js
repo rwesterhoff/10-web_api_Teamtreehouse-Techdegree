@@ -395,7 +395,15 @@ function searchAlbums() {
                 q: searchQuery,
                 type: 'album'
             },
-            success: stripResults,
+            success: function(response){
+                var amountOfResults = response.albums.items.length;
+                console.log(amountOfResults);
+                if (amountOfResults === 0) {
+                    printMessage(imageGallery, searchQuery);
+                } else {
+                    stripResults(response);
+                }
+            },
             complete: hideLoader
         });
         if (loader.children().length < 1) { showLoader(loader, loaderHTML); }
