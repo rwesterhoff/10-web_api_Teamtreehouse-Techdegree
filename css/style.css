@@ -412,9 +412,9 @@ a:focus {
   outline: none; }
 
 .close-overlay {
-  -webkit-transition: all 0.2s linear;
-  transition: all 0.2s linear; }
+  -webkit-transition: scale 0.2s linear;
+  transition: scale 0.2s linear; }
   .close-overlay:hover, .close-overlay:focus {
-    -webkit-transform: rotate(180deg) scale(1.2);
-            transform: rotate(180deg) scale(1.2);
+    -webkit-transform: scale(1.2);
+            transform: scale(1.2);
     outline: none; }
