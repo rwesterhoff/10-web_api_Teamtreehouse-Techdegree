@@ -468,3 +468,9 @@ function searchAlbums() {
 
 // Search while typing anything
 $(input).keyup(searchAlbums);
+// Disable 'enter'-key for live search results
+$(document).keypress(function(event) {
+    if(event.which == 13) {
+        event.preventDefault();
+    }
+});
