@@ -377,7 +377,7 @@ function changeSortButtons() {
 }
 
 // Change the appearance of the buttons on click
-$('input[type="radio"').change(changeSortButtons);
+$('input[type="radio"]').change(changeSortButtons);
 
 
 /* --------------------------------------------------------------------------- *\
@@ -470,7 +470,7 @@ function searchAlbums() {
 $(input).keyup(searchAlbums);
 // Disable 'enter'-key for live search results
 $(document).keypress(function(event) {
-    if(event.which == 13) {
+    if(event.which === 13) {
         event.preventDefault();
     }
 });
