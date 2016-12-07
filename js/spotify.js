@@ -41,7 +41,7 @@ function getItunesLink(string) {
 
 function setItunesData(artist, album) {
     var fixedString = (artist + '+' + album).replace(/ /g, '+').toLowerCase();
-    console.log(fixedString);
+
     getItunesLink(fixedString);
 }
 
@@ -58,27 +58,6 @@ function checkIndex(array, term, property) {
     }
 }
 
-function activateArrows() {
-    var prevButton = '#previous-result',
-        nextButton = '#next-result';
-
-    $(prevButton).click(function() {
-        if (albumIndex === 0) {
-            albumIndex = albums.length - 1;
-        } else {
-            albumIndex -= 1;
-        }
-        getDetails(albumIndex);
-    });
-    $(nextButton).click(function() {
-        if (albumIndex === albums.length - 1) {
-            albumIndex = 0;
-        } else {
-            albumIndex += 1;
-        }
-        getDetails(albumIndex);
-    });
-}
 
 function hideOverlay() {
     var removeOverlay = function() {
@@ -166,6 +145,27 @@ function getDetails(index) {
     });
 }
 
+function activateArrows() {
+    var prevButton = '#previous-result',
+        nextButton = '#next-result';
+
+    $(prevButton).click(function() {
+        if (albumIndex === 0) {
+            albumIndex = albums.length - 1;
+        } else {
+            albumIndex -= 1;
+        }
+        getDetails(albumIndex);
+    });
+    $(nextButton).click(function() {
+        if (albumIndex === albums.length - 1) {
+            albumIndex = 0;
+        } else {
+            albumIndex += 1;
+        }
+        getDetails(albumIndex);
+    });
+}
 
 function printOverlay(container, html) {
 
@@ -208,7 +208,7 @@ function hideLoader() {
 
 
 /* --------------------------------------------------------------------------- *\
-    SORT RESULTS
+    SORT / SHOW RESULTS
 \* --------------------------------------------------------------------------- */
 
 //Prepare the setter function
@@ -267,6 +267,53 @@ function checkSortButtons() {
         sortResults(albums, sortByDate);
     }
 }
+function activateThumbnails() {
+    //On click of thumbnail
+    $("a").click(function(event) {
+        var clickedAlbumId = $(this).find('img').attr('id');
+
+        albumIndex = checkIndex(albums, clickedAlbumId, "id");
+        event.preventDefault();
+
+        //Prepare the overlay
+        printOverlay(overlay, overlayHTML);
+
+        // Get the additional data for the overlay by parsing the index
+        getDetails(albumIndex);
+    });
+}
+
+function printResults(html, container) {
+    $.each(albums, function(i, album) {
+        var albumId = album.id,
+            albumName = album.name,
+            albumThumbUrl = album.thumb,
+            albumReleased = album.release_date;
+
+        // Add each album HTML to the result list
+        html += '<li class="gallery-item">';
+        html += '<a href="">';
+        html += '<img id="' + albumId + '" src="' + albumThumbUrl + '" alt="' + albumName + '">';
+        html += '</a>';
+        html += '<h2>' + albumName + '</h2>';
+        html += '<p class="meta">';
+        html += '<time datetime="' + albumReleased + '">' + albumReleased + '</time>';
+        html += '</p>';
+        html += '</li>';
+    });
+    // Inject the HTML into DOM (the result list)
+    container.html(html);
+}
+
+function showResults() {
+    var resultHTML = '';
+
+    //First check what sort button is selected
+    checkSortButtons();
+    printResults(resultHTML, imageGallery);
+    activateThumbnails();
+}
+
 
 //Prepare the change function
 function changeSortButtons() {
@@ -302,56 +349,8 @@ function sortResults(array, value) {
 SEARCH
 \* --------------------------------------------------------------------------- */
 
-function activateThumbnails() {
-    //On click of thumbnail
-    $("a").click(function(event) {
-        var clickedAlbumId = $(this).find('img').attr('id');
-
-        albumIndex = checkIndex(albums, clickedAlbumId, "id");
-        event.preventDefault();
-
-        //Prepare the overlay
-        printOverlay(overlay, overlayHTML);
-
-        // Get the additional data for the overlay by parsing the index
-        getDetails(albumIndex);
-    });
-}
-
-
 function printMessage(container, query) {
     container.html('<p>We have no search results for ' + '<strong>' + query + '</strong>' + '</p>');
-}
-
-function printResults(html, container) {
-    $.each(albums, function(i, album) {
-        var albumId = album.id,
-            albumName = album.name,
-            albumThumbUrl = album.thumb,
-            albumReleased = album.release_date;
-
-        // Add each album HTML to the result list
-        html += '<li class="gallery-item">';
-        html += '<a href="">';
-        html += '<img id="' + albumId + '" src="' + albumThumbUrl + '" alt="' + albumName + '">';
-        html += '</a>';
-        html += '<h2>' + albumName + '</h2>';
-        html += '<p class="meta">';
-        html += '<time datetime="' + albumReleased + '">' + albumReleased + '</time>';
-        html += '</p>';
-        html += '</li>';
-    });
-    // Inject the HTML into DOM (the result list)
-    container.html(html);
-}
-
-function showResults() {
-    var resultHTML = '';
-
-    //First check what sort button is selected
-    checkSortButtons();
-    printResults(resultHTML, imageGallery);
-    activateThumbnails();
 }
 
 function stripResults(response) {
@@ -367,6 +366,8 @@ function stripResults(response) {
         //Get the release date 
         $.ajax({
             url: 'https://api.spotify.com/v1/albums/' + result.id,
+            type: 'GET',
+            dataType: 'json',
             success: function(response) {
                 strippedResult.release_date = response.release_date;
             }
@@ -374,6 +375,7 @@ function stripResults(response) {
 
         // Push result into global albums variable
         albums.push(strippedResult);
+
     });
 
     showResults();
@@ -395,9 +397,9 @@ function searchAlbums() {
                 q: searchQuery,
                 type: 'album'
             },
-            success: function(response){
+            success: function(response) {
                 var amountOfResults = response.albums.items.length;
-                console.log(amountOfResults);
+
                 if (amountOfResults === 0) {
                     printMessage(imageGallery, searchQuery);
                 } else {
