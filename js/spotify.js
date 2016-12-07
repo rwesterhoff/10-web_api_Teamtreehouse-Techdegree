@@ -52,7 +52,7 @@ function setItunesData(artist, album) {
 // Get the index of a clicked thumbnail
 function checkIndex(array, term, property) {
     // Check each item in the array
-    for (var i = 0, len = array.length; i < len; i++) {
+    for (var i = 0, amount = array.length; i < amount; i++) {
         // Check if the term matches one of the objects properties
         if (array[i][property] === term) {
             return i;
@@ -389,6 +389,26 @@ function printMessage(container, query) {
     container.html('<p>We have no search results for ' + '<strong>' + query + '</strong>' + '</p>');
 }
 
+// Get the release date from a specific request
+function getDate(arr, obj, id) {
+    //Get the release date 
+        $.ajax({
+            url: 'https://api.spotify.com/v1/albums/' + id,
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                // And add the 'release_date' as a property
+                obj.release_date = response.release_date;
+            },
+            // When this finally is done, push result into global albums variable
+            complete: function() {
+                arr.push(obj);
+                // And show everything
+                showResults();
+            }
+        });
+}
+
 // Get an object with just the neccessary data
 function stripResults(response) {
     // Reset collected albums data
@@ -403,20 +423,9 @@ function stripResults(response) {
         strippedResult.id = result.id;
         strippedResult.name = result.name;
         strippedResult.thumb = result.images[1].url;
-        //Get the release date 
-        $.ajax({
-            url: 'https://api.spotify.com/v1/albums/' + result.id,
-            type: 'GET',
-            dataType: 'json',
-            success: function(response) {
-                // And add the 'release_date' as a property
-                strippedResult.release_date = response.release_date;
-            }
-        });
-        // Push result into global albums variable
-        albums.push(strippedResult);
+        // Request the date
+        getDate(albums, strippedResult, result.id);
     });
-    showResults();
 }
 
 // Search albums based on keyword
