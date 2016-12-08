@@ -114,8 +114,7 @@ input[type='search'],
       top: 47px;
       left: 0;
       width: 100%;
-      height: auto;
-      baseline-shift: 40; } }
+      height: auto; } }
 
 main.container {
   text-align: center; }
