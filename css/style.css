@@ -159,7 +159,6 @@ li.gallery-item {
 #js-overlay-wrapper {
   position: absolute;
   width: 100%;
-  max-width: 960px;
   padding: 50px;
   background-color: #FFF; }
   @media screen and (max-width: 1025px) {
@@ -169,6 +168,7 @@ li.gallery-item {
     #js-overlay-wrapper {
       top: 15%;
       left: 50%;
+      max-width: 960px;
       margin-bottom: 120px;
       -webkit-transform: translate(-50%, 0);
               transform: translate(-50%, 0); } }
